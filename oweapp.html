@@ -1,0 +1,153 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>Owe App</title> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
+   	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>	
+    	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
+	<script type="text/javascript" src="http://barril1.projects.cs.illinois.edu/oweapp/jquery.tablesorter.min.js"></script>
+	<script type="text/javascript" src="http://barril1.projects.cs.illinois.edu/oweapp/jquery.metadata.js"></script>
+	<script type="text/javascript">
+      	  function toggleDebtInfo(debtID) {
+       	    var ref = document.getElementById(debtID);
+            $(ref).slideToggle(400);
+       	  } 
+       	  
+       $(document).ready(function() { 
+         $("#myTable").tablesorter(); 
+       });
+       
+       $(function() {
+         $("#accordion").accordion({active:false,collapsible:true,autoHeight:false});
+         $("#accordion2").accordion({active:false,collapsible:true,autoHeight:false});
+       });
+       </script>
+       </head> 
+<body> 
+
+<div data-role="page" id="login_page">
+	<div data-role="header">
+		<h1>Owe App</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		<div data-role="fieldcontain">
+    			<label for="username">Username:</label>
+    			<input type="text" name="username" id="username" value=""/>
+		</div>		
+		
+		<div data-role="fieldcontain">
+    			<label for="password">Password:</label>
+   			<input type="password" name="password" id="password" value=""/>
+		</div>
+		
+		<div>
+			<a href="#home_page">
+        		<button type="submit" name="submit" value="submit-value">
+        		Log In
+        		</button>
+        		</a>
+     		</div>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="home_page">
+	<div data-role="header">
+		<a href="http://barril1.projects.cs.illinois.edu/oweapp/oweapp.html" data-direction="reverse" class="ui-btn-left">Log Out</a>
+		<h1>Owe App</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		<ul data-role="listview" data-theme="g">
+			<a href="#people_you_owe_page" data-role="button" data-icon="arrow-r" data-iconpos="right"><li>
+			People You Owe</li></a>
+			<a href="#people_that_owe_you_page" data-role="button" data-icon="arrow-r" data-iconpos="right"><li>
+			People That Owe You</li></a>
+			<a href="#create_request_page" data-role="button" data-icon="arrow-r" data-iconpos="right"><li>
+			Create New Request</li></a>
+		</ul>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="people_you_owe_page">
+	<div data-role="header">
+		<a href="home_page" data-icon="home" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
+		<h1>Owe App</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		<div id="accordion">
+    			<h3><a href="#">Davy Jones</a></h3>
+    				<div>Amount Owed: $1000<br />
+    				     Date Added: 11/5/11<br />
+    				     Priority: High</div>
+    			<h3><a href="#">Erica</a></h3>
+   				<div>Amount Owed: $5.00<br />
+   				     Date Added: 9/16/11<br />
+   				     Priority: High</div>
+   			<h3><a href="#">Farquad</a></h3>
+   				<div>Amount Owed: $1<br />
+   				     Date Added: 2/3/11<br />
+   				     Priority: Low</div>
+		</div>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="people_that_owe_you_page">
+	<div data-role="header">
+		<a href="home_page" data-icon="home" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
+		<h1>Owe App</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		<div id="accordion2">
+    			<h3><a href="#">Alice</a></h3>
+    				<div>Amount Owed: $50<br />
+    				     Date Added: 11/6/11</div>
+    			<h3><a href="#">Bob</a></h3>
+   				<div>Amount Owed: $2.50<br />
+   				     Date Added: 10/31/11</div>
+   			<h3><a href="#">Chris</a></h3>
+   				<div>Amount Owed: $11.99<br />
+   				     Date Added: 5/3/92</div>
+		</div>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="create_request_page">
+	<div data-role="header">
+		<a href="home_page" data-icon="home" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
+		<h1>Owe App</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		Page under construction. Please check back soon.
+		<ul data-role="listview"></ul>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+</body>
+</html>
