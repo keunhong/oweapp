@@ -11,15 +11,22 @@
 	<script type="text/javascript" src="http://barril1.projects.cs.illinois.edu/oweapp/jquery.tablesorter.min.js"></script>
 	<script type="text/javascript" src="http://barril1.projects.cs.illinois.edu/oweapp/jquery.metadata.js"></script>
 	<script type="text/javascript">
-      	  function toggleDebtInfo(debtID) {
-       	    var ref = document.getElementById(debtID);
-            $(ref).slideToggle(400);
-       	  } 
-       	  
-       $(document).ready(function() { 
-         $("#myTable").tablesorter(); 
-       });
        
+       function sendData() {
+         var rqst;
+         if (window.XMLHttpRequest)
+           rqst = new XMLHttpRequest();
+         else
+           rqst = new ActiveXObject("Microsoft.XMLHTTP");
+           
+         var name1 = document.getElementById("name1").value;
+         var name2 = document.getElementById("name2").value;
+         var amount = document.getElementById("amount").value;
+         var comment = document.getElementById("comment").value;
+	
+	 //TO-DO: Send data to server
+       }
+
        $(function() {
          $("#accordion").accordion({active:false,collapsible:true,autoHeight:false});
          $("#accordion2").accordion({active:false,collapsible:true,autoHeight:false});
@@ -118,13 +125,16 @@
 		<div id="accordion2">
     			<h3><a href="#">Alice</a></h3>
     				<div>Amount Owed: $50<br />
-    				     Date Added: 11/6/11</div>
+    				     Date Added: 11/6/11<br />
+    				     Priority: Medium</div>
     			<h3><a href="#">Bob</a></h3>
    				<div>Amount Owed: $2.50<br />
-   				     Date Added: 10/31/11</div>
+   				     Date Added: 10/31/11<br />
+   				     Priority: Low</div>
    			<h3><a href="#">Chris</a></h3>
    				<div>Amount Owed: $11.99<br />
-   				     Date Added: 5/3/92</div>
+   				     Date Added: 5/3/92<br />
+   				     Priority: High</div>
 		</div>
 	</div><!-- /content -->
 
@@ -140,8 +150,17 @@
 	</div><!-- /header -->
 
 	<div data-role="content">	
-		Page under construction. Please check back soon.
-		<ul data-role="listview"></ul>
+		<form action=''>
+ 			<input type='text' name='name1' id='name1'/><br />
+ 			Owes <br />
+ 			<input type='text' name='name2' id='name2'/><br />
+ 			This Amount: <br />
+ 			<input type='text' name='amount' id='amount'/><br />
+ 			<br />
+ 			Comment<br />
+ 			<textarea name='comment' id='comment' rows='4' cols='50'></textarea><br />
+ 			<input type='submit' name='submit' value='Add Transaction Request' onclick="sendData();" />
+		</form>
 	</div><!-- /content -->
 
 	<div data-role="footer">
