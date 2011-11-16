@@ -1,170 +1,316 @@
 <!DOCTYPE html> 
 <html> 
 	<head> 
-	<title>Owe App</title> 
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
-	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
-   	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-  	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>	
-    	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
-	<script type="text/javascript" src="http://barril1.projects.cs.illinois.edu/oweapp/jquery.tablesorter.min.js"></script>
-	<script type="text/javascript" src="http://barril1.projects.cs.illinois.edu/oweapp/jquery.metadata.js"></script>
+	<title>Debitum</title> 
+    	<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" type="text/css" media="all"/>
+  	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+  	<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>	
+	<script type="text/javascript" src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+	
 	<script type="text/javascript">
-       
-       function sendData() {
-         var rqst;
-         if (window.XMLHttpRequest)
-           rqst = new XMLHttpRequest();
-         else
-           rqst = new ActiveXObject("Microsoft.XMLHTTP");
+	
+        function newServerRequest() {
+          var serverRequest;
+          if (window.XMLHttpRequest)
+            serverRequest = new XMLHttpRequest();
+          else
+            serverRequest = new ActiveXObject("Microsoft.XMLHTTP");
            
-         var name1 = document.getElementById("name1").value;
-         var name2 = document.getElementById("name2").value;
-         var amount = document.getElementById("amount").value;
-         var comment = document.getElementById("comment").value;
+          return serverRequest;
+        }
+       
+       function registerUser() {
+         var rqst = newServerRequest();
+
+         var first_name = document.getElementById("first_name").value;
+         var last_name = document.getElementById("last_name").value;
+         var email = document.getElementById("email").value;
+         var pass1 = document.getElementById("pass1").value;
+         var pass2 = document.getElementById("pass2").value;
+         
+         if (first_name == "" || last_name == "" || email == "" || pass1 == "" || pass2 == "") {
+           alert("Please fill in all fields.");
+           return;
+         }
+	 
+	 var matching_passwords = clean_password(pass1, pass2);
+	 if (matching_passwords == "false") {
+	   alert("Passwords do not match.");
+	   return;
+	 }
+         
+         //TO-DO: Send data to server
+       }
+       
+       function clean_password(pass1, pass2) {
+         if (pass1 == pass2)
+           return "true";
+         else
+           return "false";
+       }
+       
+       function sendDebtorData() {
+         var rqst = newServerRequest();
+           
+         var name = document.getElementById("debtor").value;
+         var amount = document.getElementById("debtorAmount").value;
+         var comment = document.getElementById("comment1").value;
+	
+	 var validAmount = clean_amount(amount);
+	 if (validAmount == "false") {
+	   alert("Invalid amount.");
+	   return;
+	 }
+	 
+	 //TO-DO: Send data to server
+       }
+       
+       function sendCreditorData() {
+         var rqst = newServerRequest();
+           
+         var name = document.getElementById("creditor").value;
+         var amount = document.getElementById("iOweAmount").value;
+         var comment = document.getElementById("comment2").value;
+         
+	 var validAmount = clean_amount(amount);
+	 if (validAmount == "false") {
+	   alert("Invalid amount.");
+	   return;
+	 }
 	
 	 //TO-DO: Send data to server
        }
+       
+       function clean_amount(amount) {
+       alert(typeof amount);
+         if (typeof amount == "number" && amount > 0)
+           return "true";
+         else
+           return "false";
+       }
+       
+       function about() {
+         alert("Debitum\nVersion: 0.2\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
+         "Copyright " + unescape("%A9") + " 2011 Ryan Barril, Keunhong Park\n                     All rights reserved.");
+       }
 
-       $(function() {
-         $("#accordion").accordion({active:false,collapsible:true,autoHeight:false});
-         $("#accordion2").accordion({active:false,collapsible:true,autoHeight:false});
-       });
+
        </script>
        </head> 
 <body> 
 
 <div data-role="page" id="login_page">
 	<div data-role="header">
-		<h1>Owe App</h1>
+		<h1>Debitum v0.2</h1>
+		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
 	<div data-role="content">	
 		<div data-role="fieldcontain">
-    			<label for="username">Username:</label>
+    			<label for="username">Username</label>
     			<input type="text" name="username" id="username" value=""/>
 		</div>		
 		
 		<div data-role="fieldcontain">
-    			<label for="password">Password:</label>
+    			<label for="password">Password</label>
    			<input type="password" name="password" id="password" value=""/>
 		</div>
 		
 		<div>
-			<a href="#home_page">
-        		<button type="submit" name="submit" value="submit-value">
-        		Log In
-        		</button>
+			<a href="#home_page" data-role="button">Log In</a>
+     		</div>
+
+		<div>
+			<a href="#registration_page" data-role="button">
+        		Register
         		</a>
      		</div>
 	</div><!-- /content -->
 
 	<div data-role="footer">
-		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+		<h4>&copy; 2011 Ryan Barril, Keunhong Park</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="registration_page">
+	<div data-role="header">
+		<a href="#login_page" data-icon="back" data-direction="reverse" data-theme="c">Back</a>
+		<h1>Debitum v0.2</h1>
+		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+ 		First Name <br /><input type='text' name='first_name' id='first_name'/><br /><br />
+ 		Last Name <br /><input type='text' name='last_name' id='last_name'/><br /><br />
+ 		E-Mail <br /><input type='text' name='email' id='email'/><br /><br />
+ 		Password <br /><input type='text' name='pass1' id='pass1'/><br /><br />
+ 		Confirm Password <br /><input type='text' name='pass2' id='pass2'/><br /><br />
+ 		<button name='register' onclick="javascript:registerUser()">
+ 		Submit
+ 		</button>	
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>&copy; 2011 Ryan Barril, Keunhong Park</h4>
 	</div><!-- /footer -->
 </div><!-- /page -->
 
 <div data-role="page" id="home_page">
 	<div data-role="header">
-		<a href="http://barril1.projects.cs.illinois.edu/oweapp/oweapp.html" data-direction="reverse" class="ui-btn-left">Log Out</a>
-		<h1>Owe App</h1>
+		<a href="#login_page" data-icon="minus" data-direction="reverse" data-theme="c">Log Out</a>
+		<h1>Debitum v0.2</h1>
+		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
 	<div data-role="content">	
-		<ul data-role="listview" data-theme="g">
-			<a href="#people_you_owe_page" data-role="button" data-icon="arrow-r" data-iconpos="right"><li>
+		<ul data-role="listview">
+			<a href="#creditor_page" data-role="button" data-icon="arrow-r" data-iconpos="right"><li>
 			People You Owe</li></a>
-			<a href="#people_that_owe_you_page" data-role="button" data-icon="arrow-r" data-iconpos="right"><li>
+			<a href="#debtor_page" data-role="button" data-icon="arrow-r" data-iconpos="right"><li>
 			People That Owe You</li></a>
-			<a href="#create_request_page" data-role="button" data-icon="arrow-r" data-iconpos="right"><li>
+			<a href="#create-request_page" data-role="button" data-icon="arrow-r" data-iconpos="right"><li>
 			Create New Request</li></a>
 		</ul>
 	</div><!-- /content -->
 
 	<div data-role="footer">
-		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+		<h4>&copy; 2011 Ryan Barril, Keunhong Park</h4>
 	</div><!-- /footer -->
 </div><!-- /page -->
 
-<div data-role="page" id="people_you_owe_page">
+<div data-role="page" id="creditor_page">
 	<div data-role="header">
-		<a href="home_page" data-icon="home" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
-		<h1>Owe App</h1>
+		<a href="#home_page" data-icon="home" data-direction="reverse" data-theme="c">Home</a>
+		<h1>Debitum v0.2</h1>
+		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
 	<div data-role="content">	
-		<div id="accordion">
-    			<h3><a href="#">Davy Jones</a></h3>
+		<div id="creditorAccordion" data-role="collapsible-set" data-theme="c" data-content-theme="d">
+			<div data-role="collapsible">		
+    				<h1>Davy Jones</h1>
     				<div>Amount Owed: $1000<br />
     				     Date Added: 11/5/11<br />
     				     Priority: High</div>
-    			<h3><a href="#">Erica</a></h3>
+    			</div>    				     
+			<div data-role="collapsible">    				     
+    				<h1>Erica Jones</h1>
    				<div>Amount Owed: $5.00<br />
    				     Date Added: 9/16/11<br />
    				     Priority: High</div>
-   			<h3><a href="#">Farquad</a></h3>
+    			</div>   				     
+			<div data-role="collapsible">   				     
+   				<h1>Farquad Smith</h1>
    				<div>Amount Owed: $1<br />
    				     Date Added: 2/3/11<br />
    				     Priority: Low</div>
+    			</div>   				     
 		</div>
 	</div><!-- /content -->
 
 	<div data-role="footer">
-		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+		<h4>&copy; 2011 Ryan Barril, Keunhong Park</h4>
 	</div><!-- /footer -->
 </div><!-- /page -->
 
-<div data-role="page" id="people_that_owe_you_page">
+<div data-role="page" id="debtor_page">
 	<div data-role="header">
-		<a href="home_page" data-icon="home" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
-		<h1>Owe App</h1>
+		<a href="#home_page" data-icon="home" data-direction="reverse" data-theme="c">Home</a>
+		<h1>Debitum v0.2</h1>
+		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
 	<div data-role="content">	
-		<div id="accordion2">
-    			<h3><a href="#">Alice</a></h3>
+		<div id="debtorAccordion" data-role="collapsible-set" data-theme="c" data-content-theme="d">
+			<div data-role="collapsible">
+    				<h1>Alice Inwonderland</h1>
     				<div>Amount Owed: $50<br />
     				     Date Added: 11/6/11<br />
     				     Priority: Medium</div>
-    			<h3><a href="#">Bob</a></h3>
+    			</div>
+			<div data-role="collapsible">
+    				<h1>Bob Arum</h1>
    				<div>Amount Owed: $2.50<br />
    				     Date Added: 10/31/11<br />
    				     Priority: Low</div>
-   			<h3><a href="#">Chris</a></h3>
+   			</div>
+			<div data-role="collapsible">
+   				<h1>Chris Bosh</h1>
    				<div>Amount Owed: $11.99<br />
    				     Date Added: 5/3/92<br />
    				     Priority: High</div>
+   			</div>
 		</div>
 	</div><!-- /content -->
 
 	<div data-role="footer">
-		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+		<h4>&copy; 2011 Ryan Barril, Keunhong Park</h4>
 	</div><!-- /footer -->
 </div><!-- /page -->
 
-<div data-role="page" id="create_request_page">
+<div data-role="page" id="create-request_page">
 	<div data-role="header">
-		<a href="home_page" data-icon="home" data-direction="reverse" class="ui-btn-left jqm-home">Home</a>
-		<h1>Owe App</h1>
+		<a href="#home_page" data-icon="home" data-direction="reverse" data-theme="c">Home</a>
+		<h1>Debitum v0.2</h1>
+		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
 	<div data-role="content">	
-		<form action=''>
- 			<input type='text' name='name1' id='name1'/><br />
- 			Owes <br />
- 			<input type='text' name='name2' id='name2'/><br />
- 			This Amount: <br />
- 			<input type='text' name='amount' id='amount'/><br />
- 			<br />
- 			Comment<br />
- 			<textarea name='comment' id='comment' rows='4' cols='50'></textarea><br />
- 			<input type='submit' name='submit' value='Add Transaction Request' onclick="sendData();" />
-		</form>
+		<p align=center>What type of request is it?</p>
+		<a href="#create-debtor_page" data-role="button">Someone Owes Me</a>
+		<a href="#create-creditor_page" data-role="button">I Owe Someone</a>
 	</div><!-- /content -->
 
 	<div data-role="footer">
-		<h4>Ryan Barril, Keunhong Park, Karshan Sharma (2011)</h4>
+		<h4>&copy; 2011 Ryan Barril, Keunhong Park</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="create-debtor_page">
+	<div data-role="header">
+		<a href="#create-request_page" data-icon="back" data-direction="reverse" data-theme="c">Back</a>
+		<h1>Debitum v0.2</h1>
+		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+ 		Name <br /><input type='text' name='debtor' id='debtor'/>
+ 		<blockquote>Owes Me This Amount:</blockquote>
+ 		Amount <br /><input type='text' name='debtorAmount' id='debtorAmount'/><br />
+ 		<br />
+ 		Comment<br />
+ 		<textarea name='comment1' id='comment1' rows='4' cols='50'></textarea><br />
+ 		<button onclick='javascript:sendDebtorData()'>
+ 		Add Transaction Request 
+ 		</button>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>&copy; 2011 Ryan Barril, Keunhong Park</h4>
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+<div data-role="page" id="create-creditor_page">
+	<div data-role="header">
+		<a href="#create-request_page" data-icon="back" data-direction="reverse" data-theme="c">Back</a>
+		<h1>Debitum v0.2</h1>
+		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+ 		I Owe <br /><input type='text' name='creditor' id='creditor'/>
+ 		<blockquote>This Amount:</blockquote>
+ 		Amount <br /><input type='text' name='iOweAmount' id='iOweAmount'/><br />
+ 		<br />
+ 		Comment<br />
+ 		<textarea name='comment2' id='comment2' rows='4' cols='50'></textarea><br />
+ 		<button onclick='javascript:sendCreditorData()'>
+ 		Add Transaction Request
+ 		</button>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>&copy; 2011 Ryan Barril, Keunhong Park</h4>
 	</div><!-- /footer -->
 </div><!-- /page -->
 
