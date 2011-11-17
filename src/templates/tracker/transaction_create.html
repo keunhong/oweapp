@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block css %}
+{% endblock %}
+
+{% block js %}
+{% endblock %}
+
+{% block content %}
+<h1>Create Transaction</h1>
+<form id="transaction-create-form" action="./" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}

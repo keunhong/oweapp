@@ -15,4 +15,5 @@ urlpatterns = patterns('',
 
     ## 
     url(r'^accounts/', include('accounts.urls')),
+    url(r'^tracker/', include('tracker.urls')),
 )
