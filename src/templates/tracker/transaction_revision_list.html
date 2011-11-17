@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block css %}
+{% endblock %}
+
+{% block js %}
+{% endblock %}
+
+{% block content %}
+<h1>Transaction Revisions</h1>
+<h2>{{ transaction.title }}</h2>
+    <table class="transaction_revision_list">
+        <tr>
+            <th>ID</th>
+            <th>Status</th>
+            <th>Amount</th>
+            <th>Comment</th>
+            <th>Date</th>
+        </tr>
+        {% for revision in object_list %}
+        <tr>
+            <td class="revision_id">{{ revision.id }}</td>
+            <td class="revision_status">{{ revision.status }}</td>
+            <td class="revision_amount">{{ revision.amount }} </td>
+            <td class="revision_comment">{{ revision.comment }} </td>
+            <td class="revision_date">{{ revision.created_date }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

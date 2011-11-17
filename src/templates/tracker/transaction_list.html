@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block css %}
+{% endblock %}
+
+{% block js %}
+{% endblock %}
+
+{% block content %}
+<h1>Transactions</h1>
+    <p>Debt to collect: {{ debt_to_collect }}</p>
+    <p>Debt to pay: {{ debt_to_pay }}</p>
+    <p><a href="{% url 'transaction_create_view' %}">create transaction</a></p>
+    <table class="transaction_list">
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Title</th>
+            <th>Sender</th>
+            <th>Recipient</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Operations</th>
+        </tr>
+        {% for transaction in object_list %}
+        <tr>
+            <td class="transaction_id">{{ transaction.id }}</td>
+            <td class="transaction_type">{{ transaction.transaction_type }}</td>
+            <td class="transaction_status">{{ transaction.latest_revision.status }}</td>
+            <td class="transaction_title"><a href="{% url 'transaction_revision_list_view' transaction_id=transaction.id %}">{{ transaction.title }}</a></td>
+            <td class="transaction_sender">{{ transaction.sender.email }}</td>
+            <td class="transaction_recipient">{{ transaction.recipient.email }}</td>
+            <td class="transaction_amount">{{ transaction.latest_revision.amount }} </td>
+            <td class="transaction_date">{{ transaction.latest_revision.created_date }} </td>
+            <td><a href="{% url 'transaction_revision_create_view' transaction_id=transaction.id %}">edit</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
