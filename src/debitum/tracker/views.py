@@ -37,6 +37,12 @@ class TransactionListView(ListView):
         # Create object to serialize
         transaction_output = []
         for transaction in self.related_transactions:
+            latest_revision = transaction.latest_revision()
+            latest_revision_output = {
+                'amount': latest_revision.amount,
+                'created_date': str(latest_revision.created_date),
+                'comment': latest_revision.comment,
+            }
             transaction_output.append({
                 'id': transaction.id,    
                 'description': transaction.description,
@@ -45,6 +51,7 @@ class TransactionListView(ListView):
                 'created_date': str(transaction.created_date),
                 'recipient': transaction.recipient.id,
                 'sender': transaction.sender.id,
+                'latest_revision': latest_revision_output,
             })
         # Serialize to JSON
         content = simplejson.dumps({
@@ -66,6 +73,7 @@ class TransactionListView(ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(TransactionListView, self).get_context_data(**kwargs)
+
 
         debt_to_collect = 0
         debt_to_pay = 0

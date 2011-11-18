@@ -20,7 +20,7 @@
         {% if user.is_authenticated %}
             <p>
                 {% blocktrans with request_path=request.path first_name=user.first_name  %}
-                Hey {{ first_name }}, here to claim your debt? (<a href="{{ logout_url }}?next={{request_path}}">Not {{first_name}}?</a>)
+                Hey {{ first_name }}, here to claim your debt? (<a href="{{ logout_url }}?next={{ request_path }}">Not {{first_name}}?</a>)
                 {% endblocktrans %}
             </p>
         {% else %}
