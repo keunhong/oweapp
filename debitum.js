@@ -25,19 +25,20 @@
        }
        
        function sendUserToServer() {
-         rqst = newServerRequest();
+         rqst = newServerRequest();         
          //TO-DO
        }
        function registerUser() {
          var rqst = newServerRequest();
 
+	 var user = $("#user").val();
          var first_name = $("#first_name").val();
          var last_name = $("last_name").val();
          var email = $("#email").val();
          var pass1 = $("#pass1").val();
          var pass2 = $("#pass2").val();
          
-         if (first_name == "" || last_name == "" || email == "" || pass1 == "" || pass2 == "") {
+         if (user == "" || first_name == "" || last_name == "" || email == "" || pass1 == "" || pass2 == "") {
            alert("Please fill in all fields.");
            return;
          }
@@ -80,8 +81,49 @@
        
        function sendTransactionToServer(transactionTuple) {
          var rqst = newServerRequest();
-         //TO-DO
-       }
+         var title = "Default Title";
+         var amount = transactionTuple['amount'];
+         var email = "default@illinois.edu";
+         var type = "D";
+         
+$(document).ajaxSend(function(event, xhr, settings) {
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function sameOrigin(url) {
+        var host = document.location.host;
+        var protocol = document.location.protocol;
+        var sr_origin = '//' + host;
+        var origin = protocol + sr_origin;
+        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+            !(/^(\/\/|http:|https:).*/.test(url));
+    }
+    function safeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    }
+});
+         var dataJSON = {'title' : 'Default Title', 'description' : 'Default Description', 'recipient_email' : 'default@illinois.edu', 'transaction_type' : 'D', 'amount' : amount};
+         alert("MSG: Request sent.");
+         $.post('http://127.0.0.1:8080/tracker/transactions/?format=json', {}, function(data) {
+         alert("SUCCESS");}, "json");
+      
+      }
        
        function sendDebtorData() {         
          var creditor = currentUser;
