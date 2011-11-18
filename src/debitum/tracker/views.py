@@ -9,6 +9,12 @@ from django.utils.translation import ugettext_lazy as _
 from models import *
 from forms import *
 import json
+from django.views.generic.list import *
+
+from django import http
+from django.utils import simplejson as json
+from django.core import serializers
+from django.utils import simplejson
 
 class TransactionListView(ListView):
     """
@@ -17,6 +23,28 @@ class TransactionListView(ListView):
 
     context_object_name = "transaction_list"
     template_name = "tracker/transaction_list.html"
+
+    def render_to_response(self, context):
+        # Look for a 'format=json' GET argument
+        if self.request.GET.get('format','html') == 'json':
+            transaction_output = []
+            for transaction in self.related_transactions:
+                transaction_output.append({
+                    'id': transaction.id,    
+                    'description': transaction.description,
+                    'title': transaction.title,
+                    'transaction_type': transaction.transaction_type,
+                    'created_date': str(transaction.created_date),
+                    'recipient': transaction.recipient.id,
+                    'sender': transaction.sender.id,
+                })
+            content = simplejson.dumps({
+                   'related_transactions': transaction_output
+            })
+            #content = serializers.serialize("json", self.related_transactions)
+            return HttpResponse(content, content_type='application/json')
+        else:
+            return ListView.render_to_response(self, context)
 
     def dispatch(self, request, *args, **kwargs):
         return super(TransactionListView, self).dispatch(request, *args, **kwargs)
