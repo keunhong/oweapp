@@ -5,8 +5,8 @@ from views import *
 
 
 urlpatterns = patterns('',
-    url(r'^transactions/$', TransactionListView.as_view(), name='transaction_list_view'),
-    url(r'^transactions/create/$', TransactionCreateView.as_view(), name='transaction_create_view'),
-    url(r'^transactions/(?P<transaction_id>\d+)/edit/$', TransactionRevisionCreateView.as_view(), name='transaction_revision_create_view'),
-    url(r'^transactions/(?P<transaction_id>\d+)/revisions/$', TransactionRevisionListView.as_view(), name='transaction_revision_list_view'),
+    url(r'^transactions/$', login_required(TransactionListView.as_view()), name='transaction_list_view'),
+    url(r'^transactions/create/$', login_required(TransactionCreateView.as_view()), name='transaction_create_view'),
+    url(r'^transactions/(?P<transaction_id>\d+)/edit/$', login_required(TransactionRevisionCreateView.as_view()), name='transaction_revision_create_view'),
+    url(r'^transactions/(?P<transaction_id>\d+)/revisions/$', login_required(TransactionRevisionListView.as_view()), name='transaction_revision_list_view'),
 )
