@@ -28,39 +28,45 @@
          rqst = newServerRequest();         
          //TO-DO
        }
+       
        function registerUser() {
-         var rqst = newServerRequest();
-
-	 var user = $("#user").val();
          var first_name = $("#first_name").val();
          var last_name = $("last_name").val();
          var email = $("#email").val();
          var pass1 = $("#pass1").val();
          var pass2 = $("#pass2").val();
          
-         if (user == "" || first_name == "" || last_name == "" || email == "" || pass1 == "" || pass2 == "") {
-           alert("Please fill in all fields.");
-           return;
-         }
-	 
-	 if (validate_email(email) == "false") {
-	   alert("Invalid e-mail.");
-	   return;
-	 }
-	 
-	 if (validate_password(pass1, pass2) == "false") {
-	   alert("Passwords do not match.");
-	   return;
-	 }
-         
 	 var userTuple = {
-	 "first_name" : first_name,
-	 "last_name"  : last_name,
-	 "email"      : email,
-	 "password"   : pass1
+	 fname : first_name,
+	 lname : last_name,
+	 mail  : email,
+	 pw1   : pass1,
+	 pw2   : pass2
 	 };     
 	 
-	 sendUserToServer(userTuple);  
+	 var valid_user = validate_user(userTuple);
+	 if (valid_user == "true")
+ 	   sendUserToServer(userTuple);  
+       }
+       
+       function validate_user(user) {
+         if (user.fname == '' || user.lname == '' ||
+             user.mail == '' || user.pw1 == '' || user.pw2 == '') {
+               alert("Please fill in all fields.");
+               return "false";
+             }
+             
+         if (validate_email(user.mail) == "false") {
+           alert("Invalid e-mail.");
+           return "false";
+         }
+         
+         if (validate_password(user.pw1, user.pw2) == "false") {
+           alert("Passwords do not match.");
+           return "false";
+         }
+         
+         return "true";
        }
        
        function validate_email(email) {
@@ -73,16 +79,16 @@
        }
        
        function validate_password(pass1, pass2) {
-         if (pass1 == pass2)
-           return "true";
-         else
+         if (pass1 != pass2)
            return "false";
+         else
+           return "true";
        }
        
        function sendTransactionToServer(transactionTuple) {
          var rqst = newServerRequest();
          var title = "Default Title";
-         var amount = transactionTuple['amount'];
+         var amount = transactionTuple.amt;
          var email = "default@illinois.edu";
          var type = "D";
          
@@ -119,10 +125,9 @@ $(document).ajaxSend(function(event, xhr, settings) {
     }
 });
          var dataJSON = {'title' : 'Default Title', 'description' : 'Default Description', 'recipient_email' : 'default@illinois.edu', 'transaction_type' : 'D', 'amount' : amount};
-         alert("MSG: Request sent.");
+         alert("Request sent.");
          $.post('http://127.0.0.1:8080/tracker/transactions/?format=json', {}, function(data) {
          alert("SUCCESS");}, "json");
-      
       }
        
        function sendDebtorData() {         
@@ -131,46 +136,53 @@ $(document).ajaxSend(function(event, xhr, settings) {
          var amount = $("#debtorAmount").val();
          var comment = $("#comment1").val();
          var date = new Date().toDateString();
-	
-	 if (validate_amount(amount) == "false") {
-	   alert("Invalid amount.");
-	   return;
-	 }
 	 
 	 var transactionTuple = {
-	 "creditor" : creditor,
-	 "debtor"   : debtor,
-	 "amount"   : amount,
-	 "comment"  : comment,
-	 "priority" : "Default",
-	 "date"     : date
+	 crdtr : creditor,
+	 debtr : debtor,
+	 amt   : amount,
+	 com   : comment,
+	 ts    : date
 	 };
-
-	 sendTransactionToServer(transactionTuple);
+	 
+	 var valid_data = validate_data(transactionTuple);
+	 if (valid_data == "true")
+   	   sendTransactionToServer(transactionTuple);
        }
        
-       function sendCreditorData() {         
+       function sendCreditorData() {   
          var creditor = $("#creditor").val();
          var debtor = currentUser;
          var amount = $("#iOweAmount").val();
          var comment = $("#comment2").val();
          var date = new Date().toDateString();
-         
-	 if (validate_amount(amount) == "false") {
-	   alert("Invalid amount.");
-	   return;
-	 }
 
 	 var transactionTuple = {
-	 "creditor" : creditor,
-	 "debtor"   : debtor,
-	 "amount"   : amount,
-	 "comment"  : comment,
-	 "priority" : "Default",
-	 "date"     : date
+	 crdtr : creditor,
+	 debtr : debtor,
+	 amt   : amount,
+	 com   : comment,
+	 ts    : date
 	 };
-	 
-	 sendTransactionToServer(transactionTuple);
+
+	 var valid_data = validate_data(transactionTuple);
+	 if (valid_data == "true")
+	   sendTransactionToServer(transactionTuple);
+       }
+       
+       function validate_data(data) {
+         if (data.crdtr == '' || data.debtr == '' || data.amt == '' ||
+             data.com == '' || data.ts == '') {
+               alert("Please fill in all fields.");
+               return "false";
+         }
+
+         if (validate_amount(data.amt) == "false") {
+           alert("Invalid amount.");
+           return "false";
+         } 
+
+         return "true";
        }
        
        function validate_amount(amount) {
@@ -182,6 +194,6 @@ $(document).ajaxSend(function(event, xhr, settings) {
        }
        
        function about() {
-         alert("Debitum\nVersion: 0.4\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
+         alert("Debitum\nVersion: 0.4.2\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
          "Copyright " + unescape("%A9") + " 2011 Ryan Barril, Keunhong Park\n                     All rights reserved.");
        }
