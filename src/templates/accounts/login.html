@@ -10,7 +10,8 @@
         {% if form.errors %}
             <p id="login-form-error">{% trans "Sorry, we could not find a matching user." %}</p>
         {% endif %}
-        <form id="login-form" method="post" action="{% url django.contrib.auth.views.login %}">
+        <!--<form id="login-form" method="post" action="{% url django.contrib.auth.views.login %}">-->
+        <form id="login-form" method="post" action="./">
             {% csrf_token %}
             <p><label for="id_username">{% trans "Email" %}</label> {{ form.username }}</p>
             <p><label for="password">{% trans "Password" %}</label> {{ form.password }}</p>

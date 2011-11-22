@@ -15,7 +15,9 @@ urlpatterns = patterns('',
     url(r'^activate/(?P<activation_key>\w+)/$', 'accounts.views.activate', {}, name='account_activate'),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}, name='account_login' ),
+    url(r'^login/ajax/$',  'accounts.views.loginajax'),
     url(r'^logout/$', 'django.contrib.auth.views.logout_then_login', name='account_logout'),
     
     url(r'^profile/(?P<username>\w+)/$', 'accounts.views.profile', {}, name='account_profile'),
+    url(r'^profile/$', 'accounts.views.profile', {}, name='account_profile'),
 )
