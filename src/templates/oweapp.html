@@ -17,20 +17,20 @@
 	</div><!-- /header -->
 
 	<div data-role="content">	
-        <form method="post">
-		<div data-role="fieldcontain">
-    			<label for="username">Username</label>
-    			<input type="text" name="username" id="username" value=""/>
-		</div>
-		
-		<div data-role="fieldcontain">
-    			<label for="password">Password</label>
-   			<input type="password" name="password" id="password" value=""/>
-		</div>
-		
-		<div>
-			<input type="submit" value="Log In" onclick="javascript:login()">
-        </div>
+        <form id="login_form" method="post">
+            <div data-role="fieldcontain">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" value=""/>
+            </div>
+            
+            <div data-role="fieldcontain">
+                    <label for="password">Password</label>
+                <input type="password" name="password" id="password" value=""/>
+            </div>
+            
+            <div>
+                <input type="submit" value="Log In">
+            </div>
         </form>
         
 		<div>

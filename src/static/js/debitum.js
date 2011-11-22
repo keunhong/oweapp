@@ -222,3 +222,12 @@ function about() {
     alert("Debitum\nVersion: 0.4.2\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
             "Copyright " + unescape("%A9") + " 2011 Ryan Barril, Keunhong Park\n                     All rights reserved.");
 }
+
+
+
+$(document).ready(function(){
+    $('#login_form').submit(function(e){
+        e.preventDefault();
+        login();
+    });
+});
