@@ -1,6 +1,8 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from django.views.generic.simple import direct_to_template
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -20,3 +22,5 @@ urlpatterns = patterns('',
 
     (r'^$',             direct_to_template, {'template': 'oweapp.html'}),
 )
+
+urlpatterns += staticfiles_urlpatterns()
