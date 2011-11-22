@@ -2,17 +2,17 @@
 <html> 
 	<head> 
 	<title>Debitum</title> 
-    	<link rel="stylesheet" href="http://code.jquery.com/mobile/latest/jquery.mobile.min.css" type="text/css" media="all"/>
-  	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" type="text/css" media="all"/>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
   	<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>	
-	<script type="text/javascript" src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
-	<script type="text/javascript" src="/static/js/debitum.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
+	<script type="text/javascript" src="http://barril1.projects.cs.illinois.edu/oweapp/debitum.js"></script>
         </head> 
 <body> 
 
 <div data-role="page" id="login_page">
 	<div data-role="header">
-		<h1>Debitum v0.4</h1>
+		<h1>Debitum v0.4.2</h1>
 		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
@@ -46,19 +46,21 @@
 <div data-role="page" id="registration_page">
 	<div data-role="header">
 		<a href="#login_page" data-icon="back" data-direction="reverse" data-theme="c">Back</a>
-		<h1>Debitum v0.4</h1>
+		<h1>Debitum v0.4.2</h1>
 		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
 	<div data-role="content">
+		<form data-ajax='false'>
  		First Name <br /><input type='text' name='first_name' id='first_name'/><br /><br />
  		Last Name <br /><input type='text' name='last_name' id='last_name'/><br /><br />
  		E-Mail <br /><input type='text' name='email' id='email'/><br /><br />
- 		Password <br /><input type='text' name='pass1' id='pass1'/><br /><br />
- 		Confirm Password <br /><input type='text' name='pass2' id='pass2'/><br /><br />
- 		<button name='register' onclick="javascript:registerUser()">
+ 		Password <br /><input type='password' name='pass1' id='pass1'/><br /><br />
+ 		Confirm Password <br /><input type='password' name='pass2' id='pass2'/><br /><br />
+ 		<button type='submit' name='register' onclick="javascript:registerUser()">
  		Submit
- 		</button>	
+ 		</button>
+ 		</form>	
 	</div><!-- /content -->
 
 	<div data-role="footer">
@@ -69,7 +71,7 @@
 <div data-role="page" id="home_page">
 	<div data-role="header">
 		<a href="#login_page" data-icon="minus" data-direction="reverse" data-theme="c">Log Out</a>
-		<h1>Debitum v0.4</h1>
+		<h1>Debitum v0.4.2</h1>
 		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
@@ -92,7 +94,7 @@
 <div data-role="page" id="creditor_page">
 	<div data-role="header">
 		<a href="#home_page" data-icon="home" data-direction="reverse" data-theme="c">Home</a>
-		<h1>Debitum v0.4</h1>
+		<h1>Debitum v0.4.2</h1>
 		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
@@ -102,19 +104,19 @@
     				<h1>Davy Jones</h1>
     				<div>Amount Owed: $1000<br />
     				     Date Added: 11/5/11<br />
-    				     Priority: High</div>
+    				     Comment: Locker.</div>
     			</div>    				     
 			<div data-role="collapsible">    				     
     				<h1>Erica Jones</h1>
    				<div>Amount Owed: $5.00<br />
    				     Date Added: 9/16/11<br />
-   				     Priority: High</div>
+   				     Comment: Facebook.</div>
     			</div>   				     
 			<div data-role="collapsible">   				     
    				<h1>Farquad Smith</h1>
    				<div>Amount Owed: $1<br />
    				     Date Added: 2/3/11<br />
-   				     Priority: Low</div>
+   				     Comment: Fiona!</div>
     			</div>   				     
 		</div>
 	</div><!-- /content -->
@@ -127,7 +129,7 @@
 <div data-role="page" id="debtor_page">
 	<div data-role="header">
 		<a href="#home_page" data-icon="home" data-direction="reverse" data-theme="c">Home</a>
-		<h1>Debitum v0.4</h1>
+		<h1>Debitum v0.4.2</h1>
 		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
@@ -137,19 +139,19 @@
     				<h1>Alice Inwonderland</h1>
     				<div>Amount Owed: $50<br />
     				     Date Added: 11/6/11<br />
-    				     Priority: Medium</div>
+    				     Comment: Mad hatter.</div>
     			</div>
 			<div data-role="collapsible">
     				<h1>Bob Arum</h1>
    				<div>Amount Owed: $2.50<br />
    				     Date Added: 10/31/11<br />
-   				     Priority: Low</div>
+   				     Comment: Pacman.</div>
    			</div>
 			<div data-role="collapsible">
    				<h1>Chris Bosh</h1>
    				<div>Amount Owed: $11.99<br />
    				     Date Added: 5/3/92<br />
-   				     Priority: High</div>
+   				     Comment: I lost.</div>
    			</div>
 		</div>
 	</div><!-- /content -->
@@ -162,7 +164,7 @@
 <div data-role="page" id="create-request_page">
 	<div data-role="header">
 		<a href="#home_page" data-icon="home" data-direction="reverse" data-theme="c">Home</a>
-		<h1>Debitum v0.4</h1>
+		<h1>Debitum v0.4.2</h1>
 		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
@@ -180,20 +182,22 @@
 <div data-role="page" id="create-debtor_page">
 	<div data-role="header">
 		<a href="#create-request_page" data-icon="back" data-direction="reverse" data-theme="c">Back</a>
-		<h1>Debitum v0.4</h1>
+		<h1>Debitum v0.4.2</h1>
 		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
-	<div data-role="content">	
+	<div data-role="content">
+		<form data-ajax='false'>	
  		Name <br /><input type='text' name='debtor' id='debtor'/>
  		<blockquote>Owes Me This Amount:</blockquote>
  		Amount <br /><input type='text' name='debtorAmount' id='debtorAmount'/><br />
  		<br />
  		Comment<br />
  		<textarea name='comment1' id='comment1' rows='4' cols='50'></textarea><br />
- 		<button onclick='javascript:sendDebtorData()'>
+ 		<button type='submit' onclick='javascript:sendDebtorData()'>
  		Add Transaction Request 
  		</button>
+ 		</form>
 	</div><!-- /content -->
 
 	<div data-role="footer">
@@ -204,20 +208,22 @@
 <div data-role="page" id="create-creditor_page">
 	<div data-role="header">
 		<a href="#create-request_page" data-icon="back" data-direction="reverse" data-theme="c">Back</a>
-		<h1>Debitum v0.4</h1>
+		<h1>Debitum v0.4.2</h1>
 		<a data-role='button' data-icon="info" class='ui-btn-right' data-theme='c' onclick='javascript:about()'>About</a>
 	</div><!-- /header -->
 
-	<div data-role="content">	
+	<div data-role="content">
+		<form data-ajax='false'>
  		I Owe <br /><input type='text' name='creditor' id='creditor'/>
  		<blockquote>This Amount:</blockquote>
  		Amount <br /><input type='text' name='iOweAmount' id='iOweAmount'/><br />
  		<br />
  		Comment<br />
  		<textarea name='comment2' id='comment2' rows='4' cols='50'></textarea><br />
- 		<button onclick='javascript:sendCreditorData()'>
+ 		<button type='submit' onclick='javascript:sendCreditorData()'>
  		Add Transaction Request
  		</button>
+ 		</form>
 	</div><!-- /content -->
 
 	<div data-role="footer">
