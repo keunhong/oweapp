@@ -130,5 +130,16 @@ def profile(request, username=None):
     if query_user is None:
         raise Http404
 
-    request.session['query_user'] = query_user
-    return render_to_response('accounts/profile.html', { 'query_user': query_user, }, context_instance=RequestContext(request))
+
+
+    if request.GET.get('format','html') == 'json':
+        content = simplejson.dumps({
+            'id': query_user.id,
+            'email': query_user.email,
+            'first_name': query_user.first_name,
+            'last_name': query_user.last_name,
+        })
+        return HttpResponse(content)
+    else:
+        request.session['query_user'] = query_user
+        return render_to_response('accounts/profile.html', { 'query_user': query_user, }, context_instance=RequestContext(request))
