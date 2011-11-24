@@ -68,9 +68,18 @@ function newServerRequest() {
 }
 
 function login() {
-    //TO-DO: store and encrypt passwords
     var username = $("#username").val();
     var password = $("#password").val();
+    //TO-DO: store and encrypt passwords            
+    $.post('http://127.0.0.1:8080/accounts/login/ajax/', $("#login_form").serialize(), function(data) {
+        //TO-DO: parse return string or have page return json/array
+        //document.getElementById("username").value = "";
+        //document.getElementById("password").value = "";
+        currentUser = username;
+        $.mobile.changePage("#home_page");
+    });
+    
+    
     if (username == "Ryan" && password == "illini") {
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
@@ -79,22 +88,24 @@ function login() {
     }
     else
         alert("Wrong username/password combination.");
+    
 }
 
 function sendUserToServer() {
-    rqst = newServerRequest();         
-    //TO-DO
+    $.post('http://127.0.0.1:8080/accounts/register/', $("#registration_form").serialize(), function(data) {
+        $("#stuff").html(data);
+    });
 }
 
 function registerUser() {
     var first_name = $("#first_name").val();
-    var last_name = $("last_name").val();
+    var last_name = $("#last_name").val();
     var email = $("#email").val();
     var pass1 = $("#pass1").val();
     var pass2 = $("#pass2").val();
 
     var userTuple = {
-fname : first_name,
+        fname : first_name,
         lname : last_name,
         mail  : email,
         pw1   : pass1,
@@ -163,7 +174,7 @@ function sendDebtorData() {
     var date = new Date().toDateString();
 
     var transactionTuple = {
-crdtr : creditor,
+        crdtr : creditor,
         debtr : debtor,
         amt   : amount,
         com   : comment,
@@ -183,7 +194,7 @@ function sendCreditorData() {
     var date = new Date().toDateString();
 
     var transactionTuple = {
-crdtr : creditor,
+        crdtr : creditor,
         debtr : debtor,
         amt   : amount,
         com   : comment,
@@ -223,11 +234,30 @@ function about() {
             "Copyright " + unescape("%A9") + " 2011 Ryan Barril, Keunhong Park\n                     All rights reserved.");
 }
 
-
-
 $(document).ready(function(){
     $('#login_form').submit(function(e){
         e.preventDefault();
         login();
+    });
+});
+
+$(document).ready(function(){
+    $('#registration_form').submit(function(e){
+        e.preventDefault();
+        registerUser();
+    });
+});
+
+$(document).ready(function(){
+    $('#debtor_form').submit(function(e){
+        e.preventDefault();
+        sendDebtorData();
+    });
+});
+
+$(document).ready(function(){
+    $('#creditor_form').submit(function(e){
+        e.preventDefault();
+        sendCreditorData();
     });
 });

@@ -2,13 +2,13 @@
 <html> 
 	<head> 
 	<title>Debitum</title> 
-    	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" type="text/css" media="all"/>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
   	<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>	
 	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}js/debitum.js"></script>
-        </head> 
-<body> 
+    </head>
+<body>
 
 <div data-role="page" id="login_page">
 	<div data-role="header">
@@ -17,7 +17,7 @@
 	</div><!-- /header -->
 
 	<div data-role="content">	
-        <form id="login_form" method="post">
+        <form id="login_form" method="post" data-ajax="false">
             <div data-role="fieldcontain">
                     <label for="username">Username</label>
                     <input type="text" name="username" id="username" value=""/>
@@ -36,8 +36,8 @@
 		<div>
 			<a href="#registration_page" data-role="button">
         		Register
-        		</a>
-     		</div>
+            </a>
+        </div>
 	</div><!-- /content -->
 
 	<div data-role="footer">
@@ -53,15 +53,13 @@
 	</div><!-- /header -->
 
 	<div data-role="content">
-		<form data-ajax='false'>
- 		First Name <br /><input type='text' name='first_name' id='first_name'/><br /><br />
- 		Last Name <br /><input type='text' name='last_name' id='last_name'/><br /><br />
- 		E-Mail <br /><input type='text' name='email' id='email'/><br /><br />
- 		Password <br /><input type='password' name='pass1' id='pass1'/><br /><br />
- 		Confirm Password <br /><input type='password' name='pass2' id='pass2'/><br /><br />
- 		<button type='submit' name='register' onclick="javascript:registerUser()">
- 		Submit
- 		</button>
+		<form id="registration_form" method="post" data-ajax="false">
+            First Name <br /><input type='text' name='first_name' id='first_name'/><br /><br />
+            Last Name <br /><input type='text' name='last_name' id='last_name'/><br /><br />
+            E-Mail <br /><input type='text' name='email' id='email'/><br /><br />
+            Password <br /><input type='password' name='pass1' id='pass1'/><br /><br />
+            Confirm Password <br /><input type='password' name='pass2' id='pass2'/><br /><br />
+            <input type="submit" value="Submit" />
  		</form>	
 	</div><!-- /content -->
 
@@ -189,16 +187,13 @@
 	</div><!-- /header -->
 
 	<div data-role="content">
-		<form data-ajax='false'>	
- 		Name <br /><input type='text' name='debtor' id='debtor'/>
- 		<blockquote>Owes Me This Amount:</blockquote>
- 		Amount <br /><input type='text' name='debtorAmount' id='debtorAmount'/><br />
- 		<br />
- 		Comment<br />
- 		<textarea name='comment1' id='comment1' rows='4' cols='50'></textarea><br />
- 		<button type='submit' onclick='javascript:sendDebtorData()'>
- 		Add Transaction Request 
- 		</button>
+		<form id='debtor_form' data-ajax='false'>	
+            Name <br /><input type='text' name='debtor' id='debtor'/>
+            <blockquote>Owes Me This Amount:</blockquote>
+            Amount <br /><input type='text' name='debtorAmount' id='debtorAmount'/><br /><br />
+            Comment<br />
+            <textarea name='comment1' id='comment1' rows='4' cols='50'></textarea><br />
+            <input type='submit' value='Add Transaction Request' />
  		</form>
 	</div><!-- /content -->
 
@@ -215,17 +210,14 @@
 	</div><!-- /header -->
 
 	<div data-role="content">
-		<form data-ajax='false'>
- 		I Owe <br /><input type='text' name='creditor' id='creditor'/>
- 		<blockquote>This Amount:</blockquote>
- 		Amount <br /><input type='text' name='iOweAmount' id='iOweAmount'/><br />
- 		<br />
- 		Comment<br />
- 		<textarea name='comment2' id='comment2' rows='4' cols='50'></textarea><br />
- 		<button type='submit' onclick='javascript:sendCreditorData()'>
- 		Add Transaction Request
- 		</button>
- 		</form>
+		<form id='creditor_form' data-ajax='false'>
+            I Owe <br /><input type='text' name='creditor' id='creditor'/>
+            <blockquote>This Amount:</blockquote>
+            Amount <br /><input type='text' name='iOweAmount' id='iOweAmount'/><br /><br />
+            Comment<br />
+            <textarea name='comment2' id='comment2' rows='4' cols='50'></textarea><br />
+            <input type='submit' value='Add Transaction Request' />
+        </form>
 	</div><!-- /content -->
 
 	<div data-role="footer">
