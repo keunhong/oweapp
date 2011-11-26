@@ -72,23 +72,19 @@ function login() {
     var password = $("#password").val();
     //TO-DO: store and encrypt passwords            
     $.post('http://127.0.0.1:8080/accounts/login/ajax/', $("#login_form").serialize(), function(data) {
-        //TO-DO: parse return string or have page return json/array
-        //document.getElementById("username").value = "";
-        //document.getElementById("password").value = "";
-        currentUser = username;
-        $.mobile.changePage("#home_page");
+        var obj = $.parseJSON(data);
+        
+        if(obj.status === true){
+            currentUser = username;
+            $.mobile.changePage("#home_page");
+        }else if(obj.status === false){
+            alert('Wrong email/password combination.');
+        }else{
+            alert('Unknown error.');
+        }
     });
-    
-    
-    if (username == "Ryan" && password == "illini") {
-        document.getElementById("username").value = "";
-        document.getElementById("password").value = "";
-        currentUser = username;
-        $.mobile.changePage("#home_page");
-    }
-    else
-        alert("Wrong username/password combination.");
-    
+
+    return false;    
 }
 
 function sendUserToServer() {
@@ -239,23 +235,14 @@ $(document).ready(function(){
         e.preventDefault();
         login();
     });
-});
-
-$(document).ready(function(){
     $('#registration_form').submit(function(e){
         e.preventDefault();
         registerUser();
     });
-});
-
-$(document).ready(function(){
     $('#debtor_form').submit(function(e){
         e.preventDefault();
         sendDebtorData();
     });
-});
-
-$(document).ready(function(){
     $('#creditor_form').submit(function(e){
         e.preventDefault();
         sendCreditorData();

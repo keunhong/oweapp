@@ -93,6 +93,56 @@ def register(request):
     else:
         return redirect('/')
 
+def registerajax(request):
+    """
+    Register View
+    """
+
+    if not request.user.is_authenticated():
+        if request.method == 'POST':
+            form = RegistrationForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password1']
+                username = hashlib.sha1(email).hexdigest()[:30]
+
+                first_name = form.cleaned_data['first_name'];
+                last_name = form.cleaned_data['last_name'];
+
+                # Create new user
+                new_user = RegistrationProfile.objects.create_inactive_user(username, email, password, first_name, last_name)
+                new_user_profile = UserProfile(user=new_user)
+                new_user_profile.save()
+
+                # Create session variable for printing later
+                request.session['user'] = new_user
+                register_output = {
+                    'status': "success",
+                    'user': new_user.id,
+                }
+            else:
+                fields = []
+                for field in form:
+                    errors = [x for x in field.errors]
+                    field_errors = {
+                        'label': unicode(field.label),
+                        'errors': errors,
+                    }
+                    fields.append(field_errors)
+
+                register_output = {
+                    'status': "error",
+                    'fields': fields,
+                }
+
+            return HttpResponse(simplejson.dumps(register_output))
+        else:
+            form = RegistrationForm(label_suffix='')
+        
+        return render_to_response('accounts/register.html', { 'form': form, }, context_instance=RequestContext(request))
+    else:
+        return redirect('/')
+
 def activate(request, activation_key):
     """
     Activate User

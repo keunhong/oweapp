@@ -8,6 +8,7 @@ urlpatterns = patterns('',
 
     # registration
     url(r'^register/$', 'accounts.views.register', {}, name='account_register'),
+    url(r'^register/ajax/$', 'accounts.views.registerajax', {}, name='account_register'),
     url(r'^register/success/', direct_to_template, {'template': 'accounts/register_success.html'}, name='account_register_success'),
 
     # activation
