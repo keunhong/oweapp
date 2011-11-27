@@ -57,16 +57,6 @@ $(document).ajaxSend(function(event, xhr, settings) {
     }
 });
 
-function newServerRequest() {
-    var serverRequest;
-    if (window.XMLHttpRequest)
-        serverRequest = new XMLHttpRequest();
-    else
-        serverRequest = new ActiveXObject("Microsoft.XMLHTTP");
-
-    return serverRequest;
-}
-
 function login() {
     var username = $("#username").val();
     var password = $("#password").val();
@@ -74,14 +64,14 @@ function login() {
     $.post('http://127.0.0.1:8080/accounts/login/ajax/', $("#login_form").serialize(), function(data) {
         var obj = $.parseJSON(data);
         
-        if(obj.status === true){
+        if (obj.status === true) {
             currentUser = username;
             $.mobile.changePage("#home_page");
-        }else if(obj.status === false){
+        } 
+        else if (obj.status === false)
             alert('Wrong email/password combination.');
-        }else{
+        else
             alert('Unknown error.');
-        }
     });
 
     return false;    
@@ -109,57 +99,50 @@ function registerUser() {
     };     
 
     var valid_user = validate_user(userTuple);
-    if (valid_user == "true")
-        sendUserToServer(userTuple);  
+    if (valid_user == true)
+        sendUserToServer();  
 }
 
 function validate_user(user) {
     if (user.fname == '' || user.lname == '' ||
             user.mail == '' || user.pw1 == '' || user.pw2 == '') {
         alert("Please fill in all fields.");
-        return "false";
+        return false;
     }
 
-    if (validate_email(user.mail) == "false") {
+    if (validate_email(user.mail) == false) {
         alert("Invalid e-mail.");
-        return "false";
+        return false;
     }
 
-    if (validate_password(user.pw1, user.pw2) == "false") {
+    if (validate_password(user.pw1, user.pw2) == false) {
         alert("Passwords do not match.");
-        return "false";
+        return false;
     }
 
-    return "true";
+    return true;
 }
 
 function validate_email(email) {
     var atpos = email.indexOf("@");
     var dotpos = email.lastIndexOf(".");
     if (atpos < 1 || dotpos < atpos + 2 || dotpos+2 >= email.length)
-        return "false";
+        return false;
     else
-        return "true"
+        return true
 }
 
 function validate_password(pass1, pass2) {
     if (pass1 != pass2)
-        return "false";
+        return false;
     else
-        return "true";
+        return true;
 }
 
-function sendTransactionToServer(transactionTuple) {
-    var rqst = newServerRequest();
-    var title = "Default Title";
-    var amount = transactionTuple.amt;
-    var email = "default@illinois.edu";
-    var type = "D";
-
-    var dataJSON = {'title' : 'Default Title', 'description' : 'Default Description', 'recipient_email' : 'default@illinois.edu', 'transaction_type' : 'D', 'amount' : amount};
-    alert("Request sent.");
-    $.post('http://127.0.0.1:8080/tracker/transactions/create/', dataJSON, function(data) {
-            alert("SUCCESS");}, "json");
+function sendTransactionToServer(transactionForm) {
+    $.post('http://127.0.0.1:8080/tracker/transactions/create/', $(transactionForm).serialize(), function(data) {
+        alert("SUCCESS");
+    });
 }
 
 function sendDebtorData() {         
@@ -178,8 +161,8 @@ function sendDebtorData() {
     };
 
     var valid_data = validate_data(transactionTuple);
-    if (valid_data == "true")
-        sendTransactionToServer(transactionTuple);
+    if (valid_data == true)
+        sendTransactionToServer("#debtor");
 }
 
 function sendCreditorData() {   
@@ -198,31 +181,31 @@ function sendCreditorData() {
     };
 
     var valid_data = validate_data(transactionTuple);
-    if (valid_data == "true")
-        sendTransactionToServer(transactionTuple);
+    if (valid_data == true)
+        sendTransactionToServer("#creditor");
 }
 
 function validate_data(data) {
     if (data.crdtr == '' || data.debtr == '' || data.amt == '' ||
             data.com == '' || data.ts == '') {
         alert("Please fill in all fields.");
-        return "false";
+        return false;
     }
 
-    if (validate_amount(data.amt) == "false") {
+    if (validate_amount(data.amt) == false) {
         alert("Invalid amount.");
-        return "false";
+        return false;
     } 
 
-    return "true";
+    return true;
 }
 
 function validate_amount(amount) {
     var floatAmount = parseFloat(amount);
     if (floatAmount > 0)
-        return "true";
+        return true;
     else
-        return "false";
+        return false;
 }
 
 function about() {
