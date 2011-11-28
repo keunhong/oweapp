@@ -80,7 +80,8 @@ function login() {
         }
     });
 
-    return false;    
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
 }
 
 function sendUserToServer() {
@@ -98,6 +99,12 @@ function registerUser() {
         pw2   : $("#password2").val()
     };     
 
+    document.getElementById("first_name").value = "";
+    document.getElementById("last_name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("password1").value = "";
+    document.getElementById("password2").value = "";
+    
     var valid_user = validate_user(userTuple);
     if (valid_user == true)
         sendUserToServer();  
@@ -153,6 +160,10 @@ function sendDebtorData() {
         com   : $("#comment1").val(),
         ts    : new Date().toDateString()
     };
+    
+    document.getElementById("debtor").value = "";
+    document.getElementById("debtorAmount").value = "";
+    document.getElementById("comment1").value = "";
 
     var valid_data = validate_data(transactionTuple);
     if (valid_data == true)
@@ -168,6 +179,10 @@ function sendCreditorData() {
         ts    : new Date().toDateString()
     };
 
+    document.getElementById("creditor").value = "";
+    document.getElementById("iOweAmount").value = "";
+    document.getElementById("comment2").value = "";
+    
     var valid_data = validate_data(transactionTuple);
     if (valid_data == true)
         sendTransactionToServer("#creditor");
@@ -197,7 +212,7 @@ function validate_amount(amount) {
 }
 
 function about() {
-    alert("Debitum\nVersion: 0.4.2\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
+    alert("Debitum\nVersion: 0.5\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
             "Copyright " + unescape("%A9") + " 2011 Ryan Barril, Keunhong Park\n                     All rights reserved.");
 }
 
