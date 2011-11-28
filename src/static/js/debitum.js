@@ -85,23 +85,17 @@ function login() {
 
 function sendUserToServer() {
     $.post('http://127.0.0.1:8080/accounts/register/ajax/', $("#registration_form").serialize(), function(data) {
-        alert(data);
+        alert("Thank you for registering to Debitum! Please check your e-mail to activate your account.");
     });
 }
 
 function registerUser() {
-    var first_name = $("#first_name").val();
-    var last_name = $("#last_name").val();
-    var email = $("#email").val();
-    var pass1 = $("#pass1").val();
-    var pass2 = $("#pass2").val();
-
     var userTuple = {
-        fname : first_name,
-        lname : last_name,
-        mail  : email,
-        pw1   : pass1,
-        pw2   : pass2
+        fname : $("#first_name").val(),
+        lname : $("#last_name").val(),
+        mail  : $("#email").val(),
+        pw1   : $("#password1").val(),
+        pw2   : $("#password2").val()
     };     
 
     var valid_user = validate_user(userTuple);
@@ -152,18 +146,12 @@ function sendTransactionToServer(transactionForm) {
 }
 
 function sendDebtorData() {         
-    var creditor = currentUser;
-    var debtor = $("#debtor").val();
-    var amount = $("#debtorAmount").val();
-    var comment = $("#comment1").val();
-    var date = new Date().toDateString();
-
     var transactionTuple = {
-        crdtr : creditor,
-        debtr : debtor,
-        amt   : amount,
-        com   : comment,
-        ts    : date
+        crdtr : currentUser,
+        debtr : $("#debtor").val(),
+        amt   : $("#debtorAmount").val(),
+        com   : $("#comment1").val(),
+        ts    : new Date().toDateString()
     };
 
     var valid_data = validate_data(transactionTuple);
@@ -172,18 +160,12 @@ function sendDebtorData() {
 }
 
 function sendCreditorData() {   
-    var creditor = $("#creditor").val();
-    var debtor = currentUser;
-    var amount = $("#iOweAmount").val();
-    var comment = $("#comment2").val();
-    var date = new Date().toDateString();
-
     var transactionTuple = {
-        crdtr : creditor,
-        debtr : debtor,
-        amt   : amount,
-        com   : comment,
-        ts    : date
+        crdtr : $("#creditor").val(),
+        debtr : currentUser,
+        amt   : $("#iOweAmount").val(),
+        com   : $("#comment2").val(),
+        ts    : new Date().toDateString()
     };
 
     var valid_data = validate_data(transactionTuple);
