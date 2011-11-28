@@ -60,6 +60,11 @@ $(document).ajaxSend(function(event, xhr, settings) {
 function login() {
     var username = $("#username").val();
     var password = $("#password").val();
+    
+    if (username == "" || password == "") {
+        alert("Please fill in both fields.");
+        return;
+    }
     //TO-DO: store and encrypt passwords            
     $.post('http://127.0.0.1:8080/accounts/login/ajax/', $("#login_form").serialize(), function(data) {
         var obj = $.parseJSON(data);
@@ -81,7 +86,6 @@ function login() {
 function sendUserToServer() {
     $.post('http://127.0.0.1:8080/accounts/register/ajax/', $("#registration_form").serialize(), function(data) {
         alert(data);
-        //$("#stuff").html(data);
     });
 }
 
