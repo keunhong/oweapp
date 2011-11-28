@@ -30,4 +30,8 @@ def activate(request, activation_key):
     login(request, user)
 
     request.session['user'] = user
-    return redirect('account_activate_success');
+    output = {
+        'status': True,
+    }
+    return HttpResponse(simplejson.dumps(output))
+    #return redirect('account_activate_success');

@@ -34,7 +34,11 @@ def profile(request, username=None):
         query_user = User.objects.get(username=username)
 
     if query_user is None:
-        raise Http404
+        output = {
+            'status': False,
+            'error': "Unknown user",
+        }
+        return HttpResponse(simplejson.dumps(output))
 
 
 
