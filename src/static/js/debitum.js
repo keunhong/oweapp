@@ -79,8 +79,9 @@ function login() {
 }
 
 function sendUserToServer() {
-    $.post('http://127.0.0.1:8080/accounts/register/', $("#registration_form").serialize(), function(data) {
-        $("#stuff").html(data);
+    $.post('http://127.0.0.1:8080/accounts/register/ajax/', $("#registration_form").serialize(), function(data) {
+        alert(data);
+        //$("#stuff").html(data);
     });
 }
 

@@ -71,7 +71,7 @@ def registerajax(request):
                 # Create session variable for printing later
                 request.session['user'] = new_user
                 register_output = {
-                    'status': "success",
+                    'status': True,
                     'user': new_user.id,
                 }
             else:
@@ -85,7 +85,8 @@ def registerajax(request):
                     fields.append(field_errors)
 
                 register_output = {
-                    'status': "error",
+                    'status': False,
+                    'error': "Validation error",
                     'fields': fields,
                 }
 
