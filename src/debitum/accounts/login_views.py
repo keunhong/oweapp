@@ -53,6 +53,7 @@ def loginajax(request):
         else:
             login_output = {
                 'status': False,
+                'error': "Could not find matching user.",
             }
             return HttpResponse(simplejson.dumps(login_output))
     else:

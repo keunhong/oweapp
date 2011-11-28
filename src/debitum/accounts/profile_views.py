@@ -21,10 +21,11 @@ def profile(request, username=None):
     Activate User
     """
     if not request.user.is_authenticated():
-        context = {}
-        context['error_title'] = _(u"Not authorized")
-        context['error_body'] = _(u"You do not have the permissions to access this page.")
-        return render_to_response('error.html', context, context_instance=RequestContext(request))
+        output = {
+            'status': False,
+            'error': "Not logged in",
+        }
+        return HttpResponse(simplejson.dumps(output))
 
     # User queried for
     if username is None:
@@ -39,6 +40,7 @@ def profile(request, username=None):
 
     if request.GET.get('format','html') == 'json':
         content = simplejson.dumps({
+            'status': True,
             'id': query_user.id,
             'email': query_user.email,
             'first_name': query_user.first_name,

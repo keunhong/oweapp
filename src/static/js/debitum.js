@@ -68,10 +68,11 @@ function login() {
             currentUser = username;
             $.mobile.changePage("#home_page");
         } 
-        else if (obj.status === false)
-            alert('Wrong email/password combination.');
-        else
+        else if(obj.status === false){
+            alert(obj.error);
+        }else{
             alert('Unknown error.');
+        }
     });
 
     return false;    
@@ -213,7 +214,26 @@ function about() {
             "Copyright " + unescape("%A9") + " 2011 Ryan Barril, Keunhong Park\n                     All rights reserved.");
 }
 
+function logout(){
+    $.get('/accounts/logout/', function(data) {
+        $.mobile.changePage("#login_page");
+    });
+}
+
+function checkSession(){
+    $.get('/accounts/profile/?format=json', function(data) {
+        var obj = $.parseJSON(data);
+
+        if(obj.status === true){
+            currentUser = obj.email;
+            $.mobile.changePage("#home_page");
+        }
+    });
+}
+
 $(document).ready(function(){
+    checkSession();
+
     $('#login_form').submit(function(e){
         e.preventDefault();
         login();
@@ -229,5 +249,9 @@ $(document).ready(function(){
     $('#creditor_form').submit(function(e){
         e.preventDefault();
         sendCreditorData();
+    });
+    $('#logout_button').click(function(e){
+        e.preventDefault();
+        logout();
     });
 });
