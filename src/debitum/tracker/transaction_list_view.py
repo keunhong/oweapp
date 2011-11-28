@@ -31,29 +31,8 @@ class TransactionListView(ListView):
             return ListView.render_to_response(self, context)
 
     def json_serialize(self):
-        # Create object to serialize
-        transaction_output = []
-        for transaction in self.related_transactions:
-            latest_revision = transaction.latest_revision()
-            latest_revision_output = {
-                'amount': latest_revision.amount,
-                'created_date': str(latest_revision.created_date),
-                'comment': latest_revision.comment,
-            }
-            transaction_output.append({
-                'id': transaction.id,    
-                'description': transaction.description,
-                'title': transaction.title,
-                'transaction_type': transaction.transaction_type,
-                'created_date': str(transaction.created_date),
-                'recipient': transaction.recipient.id,
-                'sender': transaction.sender.id,
-                'latest_revision': latest_revision_output,
-            })
         # Serialize to JSON
-        content = simplejson.dumps({
-               'related_transactions': transaction_output
-        })
+        content = simplejson.dumps(self.people.values())
 
         return content
 
@@ -65,47 +44,45 @@ class TransactionListView(ListView):
         self.transactions_received = self.request.user.transactions_received.all()
         self.related_transactions = self.transactions_sent | self.transactions_received
 
+        self.people = {}
+        for transaction in self.related_transactions:
+            # Create entry
+            entry = {
+                'transactions': [],
+            }
+            # Create transaction entry
+            transaction_entry = {
+                'title': transaction.title,
+                'description': transaction.description,
+                'amount': transaction.latest_revision().amount,
+                'date': str(transaction.latest_revision().created_date),
+            }
+            # If the current user sent the transaction
+            if transaction.sender == self.request.user:
+                opposite = transaction.recipient
+                if not transaction.recipient.id in self.people:
+                    self.people[transaction.recipient.id] = entry
+                self.people[opposite.id]['transactions'].append(transaction_entry)
+
+            # if the current user received the transaction
+            if transaction.recipient == self.request.user:
+                opposite = transaction.sender
+                transaction_entry['amount'] = transaction_entry['amount'] * -1
+                if not transaction.sender.id in self.people:
+                    self.people[transaction.sender.id] = entry
+                self.people[opposite.id]['transactions'].append(transaction_entry)
+
+            # Add user information
+            entry['id'] = opposite.id
+            entry['first_name'] = opposite.first_name
+            entry['last_name'] = opposite.last_name
+
+            print entry
+
         return self.related_transactions
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(TransactionListView, self).get_context_data(**kwargs)
-
-
-        debt_to_collect = 0
-        debt_to_pay = 0
-
-        # Tentative logic to calculate balances
-        # Calculate debt to collect
-        for transaction in self.transactions_sent.iterator():
-                amount = transaction.latest_revision().amount
-                transaction_type = transaction.transaction_type;
-                if transaction_type == 'D':
-                    if amount >= 0:
-                        debt_to_collect += amount
-                    else:
-                        debt_to_pay += amount
-                elif transaction_type == 'P':
-                    if amount >= 0:
-                        debt_to_pay -= amount
-                    else:
-                        debt_to_collect -= amount
-
-        # Calculate debt to pay
-        for transaction in self.transactions_received.iterator():
-                amount = transaction.latest_revision().amount
-                if transaction_type == 'D':
-                    if amount >= 0:
-                        debt_to_collect -= amount
-                    else:
-                        debt_to_pay -= amount
-                elif transaction_type == 'P':
-                    if amount >= 0:
-                        debt_to_pay += amount
-                    else:
-                        debt_to_collect += amount
-
-        context['debt_to_collect'] = debt_to_collect
-        context['debt_to_pay'] = debt_to_pay
 
         return context

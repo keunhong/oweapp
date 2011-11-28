@@ -14,6 +14,15 @@ TYPE_CHOICES = (
     ('D', 'Debt'),
     ('P', 'Payment'),
 )
+class PendingTransactionManager(models.Manager):
+    def get_query_set(self):
+        qs = super(PendingTransactionManager, self).get_query_set()
+        for q in qs:
+            if q.latest_revision().status != 'P':
+                q.delete()
+
+        return qs
+
 class Transaction(models.Model):
     """
     Represents a transaction
@@ -24,6 +33,8 @@ class Transaction(models.Model):
         If payment: sender payed back recipient
     Negative means vice versa
     """
+    pending = PendingTransactionManager()
+
     sender = models.ForeignKey(User, unique=False, verbose_name=_('sender'), related_name = 'transactions_sent')
     recipient = models.ForeignKey(User, unique=False, verbose_name=_('recipient'), related_name = 'transactions_received')
 
@@ -47,6 +58,8 @@ class TransactionRevision(models.Model):
     One of these is added every time the transaction is edited
     """
     transaction = models.ForeignKey(Transaction, verbose_name=_('parent transaction'), related_name='revisions')
+
+    author = models.ForeignKey(User, unique=False, verbose_name=_('author'), related_name = 'revisions_created')
 
     created_date = models.DateTimeField(_(u"created date"), auto_now_add=True)
 

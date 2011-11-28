@@ -19,3 +19,6 @@ class TransactionCreateForm(forms.Form):
 class TransactionRevisionCreateForm(forms.Form):
     amount = forms.IntegerField()
     comment = forms.CharField(widget=forms.Textarea, label='Description')
+
+class TransactionApproveForm(forms.Form):
+    transaction_id = forms.IntegerField()

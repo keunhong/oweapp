@@ -52,24 +52,25 @@ class TransactionRevisionCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs):
         context = {}
 
+        # Get transaction
         transaction = get_object_or_404(Transaction, id__exact=kwargs['transaction_id'])
+
+        # Check whether user is related to transaction
         if (transaction.sender != request.user and transaction.recipient != request.user):
             return render_to_response('not_authorized.html', context, context_instance=RequestContext(request))
 
+        # If post process
         if request.method == 'POST':
             form = TransactionRevisionCreateForm(request.POST)
             if form.is_valid():
                 comment = form.cleaned_data['comment']
                 amount = form.cleaned_data['amount']
                 
-                new_revision = TransactionRevision(transaction=transaction, amount=amount, status='P', comment=comment)
+                new_revision = TransactionRevision(transaction=transaction, amount=amount, status='P', comment=comment, author=request.user)
                 new_revision.save()
 
-
-                # Redirect
-                #return redirect('transaction_list_view')
                 return HttpResponse(self.json_serialize(new_revision), content_type='application/json')
 
+        # If not post render form
         form = context['form'] = TransactionRevisionCreateForm()
-
         return render_to_response('tracker/transaction_revision_create.html', context, context_instance=RequestContext(request))

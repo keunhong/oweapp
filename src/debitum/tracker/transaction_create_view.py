@@ -65,13 +65,11 @@ class TransactionCreateView(CreateView):
 
                 new_transaction = Transaction(sender=request.user, recipient=recipient, title=title, description=description, transaction_type=transaction_type)
                 new_transaction.save()
-                new_revision = TransactionRevision(transaction=new_transaction, amount=amount, status='P', comment='')
+                new_revision = TransactionRevision(transaction=new_transaction, amount=amount, status='P', comment='', author=request.user)
                 new_revision.save()
 
-                # Redirect
-                #return redirect('transaction_list_view')
                 return HttpResponse(self.json_serialize(new_transaction), content_type='application/json')
 
+        # Render form
         form = context['form'] = TransactionCreateForm()
-
         return render_to_response('tracker/transaction_create.html', context, context_instance=RequestContext(request))
