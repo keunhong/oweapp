@@ -224,9 +224,11 @@ function checkSession(){
     $.get('/accounts/profile/?format=json', function(data) {
         var obj = $.parseJSON(data);
 
-        if(obj.status === true){
+        if(obj.status === true && $.mobile.activePage[0].id == "login_page"){
             currentUser = obj.email;
             $.mobile.changePage("#home_page");
+        }else if(obj.status === false && ($.mobile.activePage[0].id != "login_page" && $.mobile.activePage[0].id != "registration_page")){
+            $.mobile.changePage("#login_page");
         }
     });
 }
