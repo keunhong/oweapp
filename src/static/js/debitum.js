@@ -86,8 +86,16 @@ function login() {
 
 function sendUserToServer() {
     $.post('http://127.0.0.1:8080/accounts/register/ajax/', $("#registration_form").serialize(), function(data) {
+        alert("TEST");
+        alert(data);
         alert("Thank you for registering to Debitum! Please check your e-mail to activate your account.");
     });
+    
+    document.getElementById("first_name").value = "";
+    document.getElementById("last_name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("password1").value = "";
+    document.getElementById("password2").value = "";
 }
 
 function registerUser() {
@@ -97,13 +105,7 @@ function registerUser() {
         mail  : $("#email").val(),
         pw1   : $("#password1").val(),
         pw2   : $("#password2").val()
-    };     
-
-    document.getElementById("first_name").value = "";
-    document.getElementById("last_name").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("password1").value = "";
-    document.getElementById("password2").value = "";
+    };    
     
     var valid_user = validate_user(userTuple);
     if (valid_user == true)
@@ -150,6 +152,13 @@ function sendTransactionToServer(transactionForm) {
     $.post('http://127.0.0.1:8080/tracker/transactions/create/', $(transactionForm).serialize(), function(data) {
         alert("SUCCESS");
     });
+    
+    document.getElementById("debtor").value = "";
+    document.getElementById("debtorAmount").value = "";
+    document.getElementById("comment1").value = "";
+    document.getElementById("creditor").value = "";
+    document.getElementById("iOweAmount").value = "";
+    document.getElementById("comment2").value = "";
 }
 
 function sendDebtorData() {         
@@ -160,10 +169,6 @@ function sendDebtorData() {
         com   : $("#comment1").val(),
         ts    : new Date().toDateString()
     };
-    
-    document.getElementById("debtor").value = "";
-    document.getElementById("debtorAmount").value = "";
-    document.getElementById("comment1").value = "";
 
     var valid_data = validate_data(transactionTuple);
     if (valid_data == true)
@@ -178,10 +183,6 @@ function sendCreditorData() {
         com   : $("#comment2").val(),
         ts    : new Date().toDateString()
     };
-
-    document.getElementById("creditor").value = "";
-    document.getElementById("iOweAmount").value = "";
-    document.getElementById("comment2").value = "";
     
     var valid_data = validate_data(transactionTuple);
     if (valid_data == true)
