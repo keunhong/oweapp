@@ -33,5 +33,5 @@ def activate(request, activation_key):
     output = {
         'status': True,
     }
-    return HttpResponse(simplejson.dumps(output))
-    #return redirect('account_activate_success');
+    #return HttpResponse(simplejson.dumps(output))
+    return redirect('/#activate_success_page');
