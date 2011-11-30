@@ -71,6 +71,7 @@ function login() {
         
         if (obj.status === true) {
             currentUser = username;
+            $("h1.displayUser").html("Debitum v0.5 (" + currentUser + ")");
             $.mobile.changePage("#home_page");
         } 
         else if(obj.status === false){
