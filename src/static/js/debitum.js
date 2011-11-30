@@ -86,9 +86,18 @@ function login() {
 
 function sendUserToServer() {
     $.post('http://127.0.0.1:8080/accounts/register/ajax/', $("#registration_form").serialize(), function(data) {
-        alert("TEST");
-        alert(data);
-        alert("Thank you for registering to Debitum! Please check your e-mail to activate your account.");
+        var obj = $.parseJSON(data);
+        
+        if (obj.status == true)
+            alert("Thank you for registering to Debitum! Please check your e-mail to activate your account.");
+        else {
+            var errors = "";
+            for (var i = 0; i < obj.fields.length; i++) {
+                if (obj.fields[i].errors != "")
+                    errors += obj.fields[i].errors;
+            }
+            alert(obj.error + "(s): " + errors);
+        }
     });
     
     document.getElementById("first_name").value = "";
@@ -219,7 +228,7 @@ function about() {
 
 function logout(){
     $.get('/accounts/logout/', function(data) {
-        $.mobile.changePage("#login_page");
+        $.mobile.changePage("#login_page");	
     });
 }
 
@@ -230,6 +239,7 @@ function checkSession(){
         if(obj.status === true && $.mobile.activePage[0].id == "login_page"){
             currentUser = obj.email;
             $.mobile.changePage("#home_page");
+            $("h1.displayUser").html("Debitum v0.5 (" + currentUser + ")");
         }else if(obj.status === false && ($.mobile.activePage[0].id != "login_page" && $.mobile.activePage[0].id != "registration_page")){
             $.mobile.changePage("#login_page");
         }
