@@ -239,8 +239,8 @@ function checkSession(){
 
         if(obj.status === true && $.mobile.activePage[0].id == "login_page"){
             currentUser = obj.email;
-            $.mobile.changePage("#home_page");
             $("h1.displayUser").html("Debitum v0.5 (" + currentUser + ")");
+            $.mobile.changePage("#home_page");
         }else if(obj.status === false && ($.mobile.activePage[0].id != "login_page" && $.mobile.activePage[0].id != "registration_page")){
             $.mobile.changePage("#login_page");
         }
