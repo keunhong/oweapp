@@ -91,8 +91,3 @@ class TransactionCreateView(CreateView):
             # Render form
             form = context['form'] = TransactionCreateForm()
             return render_to_response('tracker/transaction_create.html', context, context_instance=RequestContext(request))
-            #output = {
-            #    'status': False,
-            #    'error': request.method,
-            #}
-            #return HttpResponse(simplejson.dumps(output))

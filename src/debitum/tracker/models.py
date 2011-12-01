@@ -14,15 +14,6 @@ TYPE_CHOICES = (
     ('D', 'Debt'),
     ('P', 'Payment'),
 )
-class PendingTransactionManager(models.Manager):
-    def get_query_set(self):
-        qs = super(PendingTransactionManager, self).get_query_set()
-        for q in qs:
-            if q.latest_revision().status != 'P':
-                q.delete()
-
-        return qs
-
 class Transaction(models.Model):
     """
     Represents a transaction

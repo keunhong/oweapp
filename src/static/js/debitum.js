@@ -188,7 +188,12 @@ function sendTransactionToServer(transactionForm) {
         url: 'http://127.0.0.1:8080/tracker/transactions/create/',
         data: transactionObject,
         success: function(data) {
-            alert(data.status);
+            if (data.status == true && type == 'P')
+                $.mobile.changePage("#creditor_page");
+            else if (data.status == true && type == 'D')
+                $.mobile.changePage("#debtor_page");
+            else
+                alert(data.error);
         }
     });
     
@@ -284,9 +289,19 @@ function checkSession(){
     });
 }
 
+function displayTransactionData() {
+    
+    $.get('/tracker/transactions/?format=json', function(data) {
+        
+        }
+    });
+}
+
 $(document).ready(function(){
     checkSession();
-
+    
+    displayTransactionData();
+    
     $('#login_form').submit(function(e){
         e.preventDefault();
         login();
