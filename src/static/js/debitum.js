@@ -267,7 +267,7 @@ function validate_amount(amount) {
 }
 
 function about() {
-    alert("Debitum\nVersion: 0.5\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
+    alert("Debitum\nVersion: 1.0\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
             "Copyright " + unescape("%A9") + " 2011 Ryan Barril, Keunhong Park\n                     All rights reserved.");
 }
 
@@ -322,7 +322,7 @@ function displayDebtor(person, transaction) {
 function displayCreditor(person, transaction) {
     $('#creditorAccordion').append('<div data-role="collapsible" data-collapsed="true">' +
                                     '<h1>' + person.first_name + ' ' + person.last_name + '</h1>' +
-                                    '<div>Amount Owed: $' + transaction.amount + '<br />' +
+                                    '<div>Amount Owed: $' + (transaction.amount * -1) + '<br />' +
                                     'Date Added: ' + transaction.date + '<br />' +
                                     'Comment: ' + transaction.description + '</div>' +
                                     '</div>');}
