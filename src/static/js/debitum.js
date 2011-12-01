@@ -292,12 +292,31 @@ function checkSession(){
     });
 }
 
-function displayTransactionData() {
-    
+function displayTransactionData() {    
     $.get('/tracker/transactions/?format=json', function(data) {
-        //alert(data[0].transactions[0].title);
-        //alert(data[0].transactions[1].description);
+        for (var i = 0; i < data.length; i++) {
+            var person = data[i];
+            var transactionList = person.transactions;
+            if (person.first_name != "" && person.last_name != "")
+                for (var j = 0; j < transactionList.length; j++) {
+                    var transaction = transactionList[j];
+                    if (transaction.amount > 0)
+                        displayDebtor(transaction);
+                    else if (transaction.amount < 0)
+                        displayCreditor(transaction);
+                }
+        }
     });
+}
+
+function appendDebtor(transaction) {
+    //TO-DO
+    $('#debtorAccordion').append();
+}
+
+function appendCreditor(transaction) {
+    //TO-DO
+    $('#creditorAccordion').append();
 }
 
 $(document).ready(function(){
