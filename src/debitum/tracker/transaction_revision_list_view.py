@@ -53,6 +53,7 @@ class TransactionRevisionListView(ListView):
             })
         # Serialize to JSON
         content = simplejson.dumps({
+                'status': True,
                 'transaction': transaction_output,
                 'revisions': revision_output,
         })
