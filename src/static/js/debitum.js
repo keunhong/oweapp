@@ -142,13 +142,13 @@ function validate_user(user) {
     return true;
 }
 
-function validate_email(email) {
+function validate_email(email) {        
     var atpos = email.indexOf("@");
     var dotpos = email.lastIndexOf(".");
     if (atpos < 1 || dotpos < atpos + 2 || dotpos+2 >= email.length)
         return false;
     else
-        return true
+        return true;
 }
 
 function validate_password(pass1, pass2) {
@@ -168,16 +168,16 @@ function sendTransactionToServer(transactionForm) {
     
     if (transactionForm == "#creditor") {
         type = 'P';
-        amt = $("#iOweAmount").val();
+        amt = $("#creditorAmount").val();
         email = $("#creditor").val();
-        comment = $("#comment2").val();
+        comment = $("#creditorComment").val();
         label = $("#creditorLabel").val();
     }
     else if (transactionForm == "#debtor") {
         type = 'D';
         amt = $("#debtorAmount").val();
         email = $("#debtor").val();
-        comment = $("#comment1").val();
+        comment = $("#debtorComment").val();
         label = $("#debtorLabel").val();
     }
     
@@ -193,22 +193,19 @@ function sendTransactionToServer(transactionForm) {
             else if (data.status == true && type == 'D')
                 $.mobile.changePage("#debtor_page");
             else
-                alert(data.error);
+                alert("Unknown error.");
         }
     });
     
-    //transaction_type
-    //amount
-    //recipient_email
-    //description
-    //title
-    
+    document.getElementById("debtorLabel").value = "";
     document.getElementById("debtor").value = "";
     document.getElementById("debtorAmount").value = "";
-    document.getElementById("comment1").value = "";
+    document.getElementById("debtorComment").value = "";
+    
+    document.getElementById("creditorLabel").value = "";
     document.getElementById("creditor").value = "";
-    document.getElementById("iOweAmount").value = "";
-    document.getElementById("comment2").value = "";
+    document.getElementById("creditorAmount").value = "";
+    document.getElementById("creditorComment").value = "";
 }
 
 function sendDebtorData() {         
@@ -217,7 +214,7 @@ function sendDebtorData() {
         crdtr : currentUser,
         debtr : $("#debtor").val(),
         amt   : $("#debtorAmount").val(),
-        com   : $("#comment1").val(),
+        com   : $("#debtorComment").val(),
         ts    : new Date().toDateString()
     };
 
@@ -231,8 +228,8 @@ function sendCreditorData() {
         title : $("#creditorLael").val(),
         crdtr : $("#creditor").val(),
         debtr : currentUser,
-        amt   : $("#iOweAmount").val(),
-        com   : $("#comment2").val(),
+        amt   : $("#creditorAmount").val(),
+        com   : $("#creditorComment").val(),
         ts    : new Date().toDateString()
     };
     
@@ -245,6 +242,11 @@ function validate_data(data) {
     if (data.crdtr == '' || data.debtr == '' || data.amt == '' ||
             data.com == '' || data.ts == '' || data.title == '') {
         alert("Please fill in all fields.");
+        return false;
+    }
+
+    if (data.crdtr == data.debtr) {
+        alert("You can't owe yourself!");
         return false;
     }
 
@@ -279,10 +281,11 @@ function checkSession(){
     $.get('/accounts/profile/?format=json', function(data) {
         var obj = $.parseJSON(data);
 
-        if(obj.status === true && $.mobile.activePage[0].id == "login_page"){
+        if(obj.status === true){
             currentUser = obj.email;
             $("h1.displayUser").html("Debitum v0.5 (" + currentUser + ")");
-            $.mobile.changePage("#home_page");
+            if ($.mobile.activePage[0].id != "home_page")
+                $.mobile.changePage("#home_page");
         }else if(obj.status === false && ($.mobile.activePage[0].id != "login_page" && $.mobile.activePage[0].id != "registration_page")){
             $.mobile.changePage("#login_page");
         }
@@ -292,7 +295,8 @@ function checkSession(){
 function displayTransactionData() {
     
     $.get('/tracker/transactions/?format=json', function(data) {
-        
+        //alert(data[0].transactions[0].title);
+        //alert(data[0].transactions[1].description);
     });
 }
 
