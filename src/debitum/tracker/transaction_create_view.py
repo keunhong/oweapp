@@ -44,6 +44,7 @@ class TransactionCreateView(CreateView):
         }
         # Serialize to JSON
         content = simplejson.dumps({
+               'status': True,
                'transaction': transaction_output
         })
 
@@ -61,7 +62,18 @@ class TransactionCreateView(CreateView):
                 transaction_type = form.cleaned_data['transaction_type']
                 amount = form.cleaned_data['amount']
 
-                recipient = User.objects.filter(email__iexact=recipient_email)[0]
+                recipients = User.objects.filter(email__iexact=recipient_email)
+
+                if len(recipients) == 0:
+                    output = {
+                        'status': False,
+                        'error': "Recipient does not exist",
+                    }
+                    return HttpResponse(simplejson.dumps(output))
+
+                recipient = recipients[0]
+
+
 
                 new_transaction = Transaction(sender=request.user, recipient=recipient, title=title, description=description, transaction_type=transaction_type)
                 new_transaction.save()

@@ -159,9 +159,39 @@ function validate_password(pass1, pass2) {
 }
 
 function sendTransactionToServer(transactionForm) {
-    $.post('http://127.0.0.1:8080/tracker/transactions/create/', $(transactionForm).serialize(), function(data) {
-        alert("SUCCESS");
+    
+    var type = '';
+    var amt = '';
+    var email = '';
+    var comment = '';
+    var label = '';
+    
+    if (transactionForm == "#creditor") {
+        type == 'P';
+        amt = $("#iOweAmount").val();
+        email = $("#creditor").val();
+        comment = $("#comment2").val();
+        label = $("#creditorLabel").val();
+    }
+    else if (transactionForm == "#debtor") {
+        type == 'D';
+        amt = $("#debtorAmount").val();
+        email = $("#debtor").val();
+        comment = $("#comment1").val();
+        label = $("#debtorLabel").val();
+    }
+    
+    var transactionObject = {transaction_type : type, amount : amt, recipient_email : email, description : comment, title : label}
+    
+    $.post('http://127.0.0.1:8080/tracker/transactions/create/', transactionObject, function(data) {
+        alert(data);
     });
+    
+    //transaction_type
+    //amount
+    //recipient_email
+    //description
+    //title
     
     document.getElementById("debtor").value = "";
     document.getElementById("debtorAmount").value = "";
@@ -173,6 +203,7 @@ function sendTransactionToServer(transactionForm) {
 
 function sendDebtorData() {         
     var transactionTuple = {
+        title : $("#debtorLabel").val(),
         crdtr : currentUser,
         debtr : $("#debtor").val(),
         amt   : $("#debtorAmount").val(),
@@ -187,6 +218,7 @@ function sendDebtorData() {
 
 function sendCreditorData() {   
     var transactionTuple = {
+        title : $("#creditorLael").val(),
         crdtr : $("#creditor").val(),
         debtr : currentUser,
         amt   : $("#iOweAmount").val(),
@@ -201,7 +233,7 @@ function sendCreditorData() {
 
 function validate_data(data) {
     if (data.crdtr == '' || data.debtr == '' || data.amt == '' ||
-            data.com == '' || data.ts == '') {
+            data.com == '' || data.ts == '' || data.title == '') {
         alert("Please fill in all fields.");
         return false;
     }

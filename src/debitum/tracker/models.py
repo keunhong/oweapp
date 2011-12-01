@@ -33,7 +33,6 @@ class Transaction(models.Model):
         If payment: sender payed back recipient
     Negative means vice versa
     """
-    pending = PendingTransactionManager()
 
     sender = models.ForeignKey(User, unique=False, verbose_name=_('sender'), related_name = 'transactions_sent')
     recipient = models.ForeignKey(User, unique=False, verbose_name=_('recipient'), related_name = 'transactions_received')

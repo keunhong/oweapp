@@ -16,6 +16,7 @@ from django.utils import simplejson as json
 from django.core import serializers
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import *
 
 class TransactionRevisionCreateView(CreateView):
     """
@@ -43,6 +44,7 @@ class TransactionRevisionCreateView(CreateView):
         }
         # Serialize to JSON
         content = simplejson.dumps({
+                'status': True,
                 'transaction': transaction_output,
                 'revision': revision_output,
         })
@@ -53,11 +55,25 @@ class TransactionRevisionCreateView(CreateView):
         context = {}
 
         # Get transaction
-        transaction = get_object_or_404(Transaction, id__exact=kwargs['transaction_id'])
+        #transaction = get_object_or_404(Transaction, id__exact=kwargs['transaction_id'])
+        try:
+            transaction = Transaction.objects.get(pk=kwargs['transaction_id'])
+        except ObjectDoesNotExist:
+            output = {
+                'status': False,
+                'error': "Does not exist",
+            }
+            return HttpResponse(simplejson.dumps(output))
+
 
         # Check whether user is related to transaction
         if (transaction.sender != request.user and transaction.recipient != request.user):
-            return render_to_response('not_authorized.html', context, context_instance=RequestContext(request))
+            output = {
+                'status': False,
+                'error': "Unauthorized",
+            }
+            return HttpResponse(simplejson.dumps(output))
+            #return render_to_response('not_authorized.html', context, context_instance=RequestContext(request))
 
         # If post process
         if request.method == 'POST':
