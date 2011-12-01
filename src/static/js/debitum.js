@@ -309,12 +309,12 @@ function displayTransactionData() {
     });
 }
 
-function appendDebtor(transaction) {
+function displayDebtor(transaction) {
     //TO-DO
     $('#debtorAccordion').append();
 }
 
-function appendCreditor(transaction) {
+function displayCreditor(transaction) {
     //TO-DO
     $('#creditorAccordion').append();
 }
