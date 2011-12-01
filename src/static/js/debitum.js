@@ -71,7 +71,7 @@ function login() {
         
         if (obj.status === true) {
             currentUser = username;
-            $("h1.displayUser").html("Debitum v0.5 (" + currentUser + ")");
+            $("h1.displayUser").html("Debitum 1.0 (" + currentUser + ")");
             $.mobile.changePage("#home_page");
         } 
         else if(obj.status === false){
@@ -283,9 +283,10 @@ function checkSession(){
 
         if (obj.status === true) {
             currentUser = obj.email;
-            $("h1.displayUser").html("Debitum v0.5 (" + currentUser + ")");
+            $("h1.displayUser").html("Debitum v1.0 (" + currentUser + ")");
             if ($.mobile.activePage[0].id != "home_page")
                 $.mobile.changePage("#home_page");
+            displayTransactionData();
         }
         else if (obj.status === false && ($.mobile.activePage[0].id != "login_page" && $.mobile.activePage[0].id != "registration_page")) {
             $.mobile.changePage("#login_page");
@@ -329,9 +330,7 @@ function displayCreditor(person, transaction) {
 
 $(document).ready(function(){
     checkSession();
-    
-    displayTransactionData();
-    
+
     $('#login_form').submit(function(e){
         e.preventDefault();
         login();
