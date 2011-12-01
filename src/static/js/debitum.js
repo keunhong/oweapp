@@ -281,12 +281,13 @@ function checkSession(){
     $.get('/accounts/profile/?format=json', function(data) {
         var obj = $.parseJSON(data);
 
-        if(obj.status === true){
+        if (obj.status === true) {
             currentUser = obj.email;
             $("h1.displayUser").html("Debitum v0.5 (" + currentUser + ")");
             if ($.mobile.activePage[0].id != "home_page")
                 $.mobile.changePage("#home_page");
-        }else if(obj.status === false && ($.mobile.activePage[0].id != "login_page" && $.mobile.activePage[0].id != "registration_page")){
+        }
+        else if (obj.status === false && ($.mobile.activePage[0].id != "login_page" && $.mobile.activePage[0].id != "registration_page")) {
             $.mobile.changePage("#login_page");
         }
     });
@@ -301,23 +302,30 @@ function displayTransactionData() {
                 for (var j = 0; j < transactionList.length; j++) {
                     var transaction = transactionList[j];
                     if (transaction.amount > 0)
-                        displayDebtor(transaction);
+                        displayDebtor(person, transaction);
                     else if (transaction.amount < 0)
-                        displayCreditor(transaction);
+                        displayCreditor(person, transaction);
                 }
         }
     });
 }
 
-function displayDebtor(transaction) {
-    //TO-DO
-    $('#debtorAccordion').append();
+function displayDebtor(person, transaction) {
+    $('#debtorAccordion').append('<div data-role="collapsible" data-collapsed="true">' +
+                                    '<h1>' + person.first_name + ' ' + person.last_name + '</h1>' +
+                                    '<div>Amount Owed: $' + transaction.amount + '<br />' +
+                                    'Date Added: ' + transaction.date + '<br />' +
+                                    'Comment: ' + transaction.description + '</div>' +
+                                    '</div>');
 }
 
-function displayCreditor(transaction) {
-    //TO-DO
-    $('#creditorAccordion').append();
-}
+function displayCreditor(person, transaction) {
+    $('#creditorAccordion').append('<div data-role="collapsible" data-collapsed="true">' +
+                                    '<h1>' + person.first_name + ' ' + person.last_name + '</h1>' +
+                                    '<div>Amount Owed: $' + transaction.amount + '<br />' +
+                                    'Date Added: ' + transaction.date + '<br />' +
+                                    'Comment: ' + transaction.description + '</div>' +
+                                    '</div>');}
 
 $(document).ready(function(){
     checkSession();
