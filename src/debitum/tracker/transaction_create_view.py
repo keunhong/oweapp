@@ -53,7 +53,7 @@ class TransactionCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs):
         context = {}
 
-        if request.method == 'POST':
+        if request.method == "POST":
             form = TransactionCreateForm(request.POST)
             if form.is_valid():
                 title = form.cleaned_data['title']
@@ -81,7 +81,18 @@ class TransactionCreateView(CreateView):
                 new_revision.save()
 
                 return HttpResponse(self.json_serialize(new_transaction), content_type='application/json')
-
-        # Render form
-        form = context['form'] = TransactionCreateForm()
-        return render_to_response('tracker/transaction_create.html', context, context_instance=RequestContext(request))
+            else:
+                output = {
+                    'status': False,
+                    'error': form.errors,
+                }
+                return HttpResponse(simplejson.dumps(output))
+        else:
+            # Render form
+            form = context['form'] = TransactionCreateForm()
+            return render_to_response('tracker/transaction_create.html', context, context_instance=RequestContext(request))
+            #output = {
+            #    'status': False,
+            #    'error': request.method,
+            #}
+            #return HttpResponse(simplejson.dumps(output))

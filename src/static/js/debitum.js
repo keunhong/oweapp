@@ -167,14 +167,14 @@ function sendTransactionToServer(transactionForm) {
     var label = '';
     
     if (transactionForm == "#creditor") {
-        type == 'P';
+        type = 'P';
         amt = $("#iOweAmount").val();
         email = $("#creditor").val();
         comment = $("#comment2").val();
         label = $("#creditorLabel").val();
     }
     else if (transactionForm == "#debtor") {
-        type == 'D';
+        type = 'D';
         amt = $("#debtorAmount").val();
         email = $("#debtor").val();
         comment = $("#comment1").val();
@@ -183,8 +183,13 @@ function sendTransactionToServer(transactionForm) {
     
     var transactionObject = {transaction_type : type, amount : amt, recipient_email : email, description : comment, title : label}
     
-    $.post('http://127.0.0.1:8080/tracker/transactions/create/', transactionObject, function(data) {
-        alert(data);
+    $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8080/tracker/transactions/create/',
+        data: transactionObject,
+        success: function(data) {
+            alert(data.status);
+        }
     });
     
     //transaction_type
