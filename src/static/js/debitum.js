@@ -293,7 +293,6 @@ function displayTransactionData() {
     
     $.get('/tracker/transactions/?format=json', function(data) {
         
-        }
     });
 }
 
