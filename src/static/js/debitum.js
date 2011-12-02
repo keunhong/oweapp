@@ -65,7 +65,7 @@ function login() {
         alert("Please fill in both fields.");
         return;
     }
-    //TO-DO: store and encrypt passwords            
+
     $.post('http://127.0.0.1:8080/accounts/login/ajax/', $("#login_form").serialize(), function(data) {
         var obj = $.parseJSON(data);
         
@@ -188,12 +188,17 @@ function sendTransactionToServer(transactionForm) {
         url: 'http://127.0.0.1:8080/tracker/transactions/create/',
         data: transactionObject,
         success: function(data) {
+            if (data.status == true)
+                alert("Request created.");
+            else
+                alert("Invalid e-mail.");
+/*
             if (data.status == true && type == 'P')
                 $.mobile.changePage("#creditor_page");
             else if (data.status == true && type == 'D')
                 $.mobile.changePage("#debtor_page");
             else
-                alert("Unknown error.");
+                alert("Unknown error."); */
         }
     });
     
@@ -225,7 +230,7 @@ function sendDebtorData() {
 
 function sendCreditorData() {   
     var transactionTuple = {
-        title : $("#creditorLael").val(),
+        title : $("#creditorLabel").val(),
         crdtr : $("#creditor").val(),
         debtr : currentUser,
         amt   : $("#creditorAmount").val(),
@@ -314,19 +319,22 @@ function displayTransactionData() {
 function displayDebtor(person, transaction) {
     $('#debtorAccordion').append('<div data-role="collapsible" data-collapsed="true">' +
                                     '<h1>' + person.first_name + ' ' + person.last_name + '</h1>' +
-                                    '<div>Amount Owed: $' + transaction.amount + '<br />' +
-                                    'Date Added: ' + transaction.date + '<br />' +
-                                    'Comment: ' + transaction.description + '</div>' +
+                                    '<div><b>Label:</b> ' + transaction.title + '<br />' +
+                                    '<<b>Amount Owed:</b> $' + transaction.amount + '<br />' +
+                                    '<b>Date Added:</b> ' + transaction.date.substring(0, 10) + '<br />' +
+                                    '<b>Comment:</b> ' + transaction.description + '</div>' +
                                     '</div>');
 }
 
 function displayCreditor(person, transaction) {
     $('#creditorAccordion').append('<div data-role="collapsible" data-collapsed="true">' +
                                     '<h1>' + person.first_name + ' ' + person.last_name + '</h1>' +
-                                    '<div>Amount Owed: $' + (transaction.amount * -1) + '<br />' +
-                                    'Date Added: ' + transaction.date + '<br />' +
-                                    'Comment: ' + transaction.description + '</div>' +
-                                    '</div>');}
+                                    '<div><b>Label:</b> ' + transaction.title + '<br />' +
+                                    '<b>Amount Owed:</b> $' + (transaction.amount * -1) + '<br />' +
+                                    '<b>Date Added:</b> ' + transaction.date.substring(0, 10) + '<br />' +
+                                    '<b>Comment:</b> ' + transaction.description + '</div>' +
+                                    '</div>');
+}
 
 $(document).ready(function(){
     checkSession();
