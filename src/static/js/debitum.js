@@ -71,7 +71,7 @@ function login() {
         
         if (obj.status === true) {
             currentUser = username;
-            $("h1.displayUser").html("Debitum 1.0 (" + currentUser + ")");
+            $("h1.displayUser").html("Debitum 1.0.1 (" + currentUser + ")");
             $.mobile.changePage("#home_page");
         } 
         else if(obj.status === false){
@@ -168,7 +168,7 @@ function sendTransactionToServer(transactionForm) {
     
     if (transactionForm == "#creditor") {
         type = 'P';
-        amt = $("#creditorAmount").val();
+        amt = $("#creditorAmount").val() * -1;
         email = $("#creditor").val();
         comment = $("#creditorComment").val();
         label = $("#creditorLabel").val();
@@ -183,23 +183,12 @@ function sendTransactionToServer(transactionForm) {
     
     var transactionObject = {transaction_type : type, amount : amt, recipient_email : email, description : comment, title : label}
     
-    $.ajax({
-        type: 'POST',
-        url: 'http://127.0.0.1:8080/tracker/transactions/create/',
-        data: transactionObject,
-        success: function(data) {
-            if (data.status == true)
-                alert("Request created.");
-            else
-                alert("Invalid e-mail.");
-/*
-            if (data.status == true && type == 'P')
-                $.mobile.changePage("#creditor_page");
-            else if (data.status == true && type == 'D')
-                $.mobile.changePage("#debtor_page");
-            else
-                alert("Unknown error."); */
-        }
+    
+    $.post('http://127.0.0.1:8080/tracker/transactions/create/', transactionObject, function(data) {
+        if (data.status == true)
+            alert("Request created.");
+        else
+            alert("Invalid e-mail.");
     });
     
     document.getElementById("debtorLabel").value = "";
@@ -272,7 +261,7 @@ function validate_amount(amount) {
 }
 
 function about() {
-    alert("Debitum\nVersion: 1.0\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
+    alert("Debitum\nVersion: 1.0.1\n\nDebitum is a web application for all of your\ndebt-tracking needs.\n\n"+
             "Copyright " + unescape("%A9") + " 2011 Ryan Barril, Keunhong Park\n                     All rights reserved.");
 }
 
@@ -288,7 +277,7 @@ function checkSession(){
 
         if (obj.status === true) {
             currentUser = obj.email;
-            $("h1.displayUser").html("Debitum v1.0 (" + currentUser + ")");
+            $("h1.displayUser").html("Debitum 1.0.1 (" + currentUser + ")");
             if ($.mobile.activePage[0].id != "home_page")
                 $.mobile.changePage("#home_page");
             displayTransactionData();
@@ -307,9 +296,9 @@ function displayTransactionData() {
             if (person.first_name != "" && person.last_name != "")
                 for (var j = 0; j < transactionList.length; j++) {
                     var transaction = transactionList[j];
-                    if (transaction.amount < 0)
+                    if (transaction.amount > 0)
                         displayDebtor(person, transaction);
-                    else if (transaction.amount > 0)
+                    else if (transaction.amount < 0)
                         displayCreditor(person, transaction);
                 }
         }
@@ -320,7 +309,7 @@ function displayDebtor(person, transaction) {
     $('#debtorAccordion').append('<div data-role="collapsible" data-collapsed="true">' +
                                     '<h1>' + person.first_name + ' ' + person.last_name + '</h1>' +
                                     '<div><b>Label:</b> ' + transaction.title + '<br />' +
-                                    '<b>Amount Owed:</b> $' + transaction.amount + '<br />' +
+                                    '<b>Amount Owed:</b> $' + (transaction.amount) + '<br />' +
                                     '<b>Date Added:</b> ' + transaction.date.substring(0, 10) + '<br />' +
                                     '<b>Comment:</b> ' + transaction.description + '</div>' +
                                     '</div>');
