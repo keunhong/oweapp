@@ -307,9 +307,9 @@ function displayTransactionData() {
             if (person.first_name != "" && person.last_name != "")
                 for (var j = 0; j < transactionList.length; j++) {
                     var transaction = transactionList[j];
-                    if (transaction.amount > 0)
+                    if (transaction.amount < 0)
                         displayDebtor(person, transaction);
-                    else if (transaction.amount < 0)
+                    else if (transaction.amount > 0)
                         displayCreditor(person, transaction);
                 }
         }
@@ -320,7 +320,7 @@ function displayDebtor(person, transaction) {
     $('#debtorAccordion').append('<div data-role="collapsible" data-collapsed="true">' +
                                     '<h1>' + person.first_name + ' ' + person.last_name + '</h1>' +
                                     '<div><b>Label:</b> ' + transaction.title + '<br />' +
-                                    '<<b>Amount Owed:</b> $' + transaction.amount + '<br />' +
+                                    '<b>Amount Owed:</b> $' + transaction.amount + '<br />' +
                                     '<b>Date Added:</b> ' + transaction.date.substring(0, 10) + '<br />' +
                                     '<b>Comment:</b> ' + transaction.description + '</div>' +
                                     '</div>');
